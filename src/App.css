@@ -1,0 +1,9 @@
+/* App.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+#root {
+  font-family: 'Helvetica', sans-serif; /* Fuente por defecto */
+  height: 100%;
+  width: 100%;
+}

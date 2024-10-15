@@ -1,0 +1,9 @@
+/* index.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* Altura máxima de la pantalla */
+  width: 100vw; /* Ancho máximo de la pantalla */
+  overflow: hidden; /* Evita el desbordamiento */
+}
