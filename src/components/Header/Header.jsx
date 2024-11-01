@@ -94,12 +94,13 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                 </Box>
                 {!!openLogin && <LoginModal {...{ openLogin, hndlClLogin, type, update }} />}
             </Grid>
+            {/* COMPONENTE DE BUSQUEDA POR HASTAHGS CON BARRA DE BUSQUEDA ARRIBA 
             <Grid item sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', height: '5vh', width: '100%', backgroundColor: colors?.secondary }}>
-                <Button sx={{ color: colors.textContrast }}>{`Busqueda`}</Button>
-                <Button sx={{ color: colors.textContrast }}>{`Cursos Empezados`}</Button>
-                <Button sx={{ color: colors.textContrast }}>{`Cursos Terminados`}</Button>
-                <Button sx={{ color: colors.textContrast }}>{`Populares`}</Button>
-            </Grid>
+                <Button sx={{ width: '100%', margin: '5px',backgroundColor: colors.textContrast }}>{`Busqueda`}</Button>
+                <Button sx={{ width: '100%', margin: '5px',backgroundColor: colors.textContrast }}>{`Cursos Empezados`}</Button>
+                <Button sx={{ width: '100%', margin: '5px',backgroundColor: colors.textContrast }}>{`Cursos Terminados`}</Button>
+                <Button sx={{ width: '100%', margin: '5px',backgroundColor: colors.textContrast }}>{`Populares`}</Button>
+            </Grid> */}
         </Grid>
     )
 }
