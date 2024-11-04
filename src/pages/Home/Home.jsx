@@ -1,16 +1,17 @@
 import { Button, Grid, Box, CircularProgress, LinearProgress } from '@mui/material';
 import PropTypes from 'prop-types';
 import Header from '../../components/Header/Header';
-import Carousel from 'react-material-ui-carousel';
+//import Carousel from 'react-material-ui-carousel';
+import Carousel from '../../components/Carousel';
 import { useEffect, useState } from 'react';
 import ProfileImageUploader from '../../components/ProfileImageUploader';
 import LeftMenu from '../../components/leftMenu/LeftMenu';
 
 const Home = ({ data, userData, loader, userLoader, update, categories, catLoader }) => {
     const images = [
-        'https://via.placeholder.com/800x400.png?text=Image+1',
-        'https://via.placeholder.com/800x400.png?text=Image+2',
-        'https://via.placeholder.com/800x400.png?text=Image+3'
+        {url: 'https://picsum.photos/1000',text: "patata patata patata patata patata patata" , textColor: 'red'},
+        {url: 'https://picsum.photos/500',text: "patata2", textColor: 'green'},
+        {url: 'https://picsum.photos/2000',text: "patata3", textColor: 'blue'}
     ];
 
     return (
@@ -18,27 +19,9 @@ const Home = ({ data, userData, loader, userLoader, update, categories, catLoade
             <Header {...{ data, userData, loader, userLoader, update }} />
             
             <Grid item xs={12} sx={{height: `90dvh`, overflow: `auto`}}>
+            <Carousel images={images} height='700px'></Carousel>
                     
             </Grid>
-            {/* <Grid item xs={2} sx={{height: `90dvh`, overflow: `auto`}}>
-                {!catLoader ? <LeftMenu {...{categories}}/> : <LinearProgress/>}
-            </Grid>
-            <Grid item xs={10}>
-                {data && !userData ? <Carousel
-                    navButtonsAlwaysVisible={false}
-                    indicatorContainerProps={{
-                        style: {
-                            marginTop: '10px', // Adjust to position the navigation menu below the carousel
-                        }
-                    }}
-                >
-                    {images.map((image, index) => (
-                        <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <img src={image} alt={`Slide ${index + 1}`} style={{ width: '100%', height: 'auto', borderRadius: '10px' }} />
-                        </Box>
-                    ))}
-                </Carousel> : loader && <CircularProgress/>}
-            </Grid> */}
         </Grid>
     );
 };
