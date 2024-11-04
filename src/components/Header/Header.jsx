@@ -41,21 +41,21 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                     </Icon>
                     <Typography variant={isMobile ? 'h6' : 'h3'} fontFamily="serif" sx={{ color: colors.logoWhite }}>Elearning</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '5%' }}>
                     {!userData && (
                         <Button
                             variant="contained"
                             size="small"
-                            sx={{ marginRight: '5px', backgroundColor: colors.logoWhite, color: colors.textContrast }}
+                            sx={{ marginRight: '5px', backgroundColor: colors.logoWhite, color: colors.textContrast, width: '100%' }}
                             onClick={() => {
                                 hndlOpLogin()
                                 setType('login')
                             }}
                         >
-                            Iniciar Sesión
+                            <Typography variant={'button'} fontSize={'0.9rem'}>Iniciar sesión</Typography>
                         </Button>
                     )}
-                    {!userData && (
+                    {/* {!userData && (
                         <Button
                             variant="contained"
                             size="small"
@@ -65,9 +65,9 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                                 setType('register')
                             }}
                         >
-                            Registrarme
+                            <Typography variant={'button'} fontSize={'0.7rem'}>Registrarme</Typography>
                         </Button>
-                    )}
+                    )} */}
                     {!!userData && (
                         <IconButton
                             id="basic-button"
