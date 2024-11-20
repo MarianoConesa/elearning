@@ -5,49 +5,59 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 const ThemeContext = createContext()
 
 export const ThemeContextProvider = ({ children }) => {
-
   const theme = useTheme()
-
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'))
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'))
 
+  // Paleta clara
   const lightPalette = {
-    primary: { main: '#3D405B' },
-    secondary: { main: '#E07A5F' },
-    background: { default: '#F4F1DE', paper: '#FFFFFF' },
-    text: { primary: '#000000', secondary: '#666666' },
-    logoWhite: '#F4F1DE',
+    primary: { main: '#1E88E5' }, // Azul Vibrante
+    secondary: { main: '#FFB74D' }, // Naranja Suave
+    background: { default: '#F9FAFB', paper: '#FFFFFF' }, // Blanco Suave
+    text: { primary: '#2E3A59', secondary: '#666666' }, // Gris Oscuro y Gris Claro
+    success: { main: '#66BB6A' }, // Verde Menta
+    warning: { main: '#FFCA28' }, // Amarillo Intenso
+    error: { main: '#E53935' }, // Rojo Suave
+    logoWhite: '#FFFFFF',
     black: '#000000',
     white: '#FFFFFF',
-    lightGray: '#D3D3D3',
-  };
-  
+  }
+
+  // Paleta oscura
   const darkPalette = {
-    primary: { main: '#1B263B' },
-    secondary: { main: '#415A77' },
-    background: { default: '#0D1B2A', paper: '#1B263B' },
-    text: { primary: '#FFFFFF', secondary: '#CCCCCC' },
+    primary: { main: '#1A237E' }, // Azul Nocturno
+    secondary: { main: '#FFB74D' }, // Naranja Suave
+    background: { default: '#0D1B2A', paper: '#1B263B' }, // Fondo oscuro
+    text: { primary: '#FFFFFF', secondary: '#CCCCCC' }, // Blanco y Gris Claro
+    success: { main: '#66BB6A' }, // Verde Menta
+    warning: { main: '#FFCA28' }, // Amarillo Intenso
+    error: { main: '#E53935' }, // Rojo Suave
     logoWhite: '#1B263B',
     black: '#FFFFFF',
     white: '#000000',
-    lightGray: '#4A4A4A',
-  };
+  }
 
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
   const toggleTheme = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
+    setIsDarkMode(prevMode => !prevMode)
+  }
 
-  const appliedTheme = useMemo(() => 
-  createTheme({
-    palette: isDarkMode ? darkPalette : lightPalette,
-  }),
-  [isDarkMode]
-);
+  const appliedTheme = useMemo(
+    () =>
+      createTheme({
+        palette: isDarkMode ? darkPalette : lightPalette,
+        typography: {
+          fontFamily: "'Roboto', 'Arial', sans-serif",
+          button: {
+            textTransform: 'none', // Evitar texto en mayúsculas
+          },
+        },
+      }),
+    [isDarkMode]
+  )
 
   return (
     <ThemeContext.Provider value={{ isSmallScreen, isMediumScreen, isLargeScreen, isDarkMode, toggleTheme }}>
