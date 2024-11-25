@@ -19,7 +19,7 @@ const Home = ({ data, userData, loader, userLoader, update, categories, catLoade
             <Header {...{ data, userData, loader, userLoader, update }} />
             
             <Grid item xs={12} sx={{height: `90dvh`, overflow: `auto`}}>
-            <Carousel images={images} height='700px'></Carousel>
+            {/* <Carousel images={images} height='700px'></Carousel> */}
                     
             </Grid>
         </Grid>
