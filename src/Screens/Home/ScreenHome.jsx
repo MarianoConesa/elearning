@@ -14,6 +14,7 @@ const ScreenHome = () =>{
     const [catLoader, setCatLoader] = useState()
     
     const update = () =>{
+        setUserData(null)
         dfltApiCall('GET', GET_INITIAL_IMAGES ,null,setData,setLoader)
         dfltApiCall('GET', GET_USER_INFO ,null,setUserData,setUserLoader)
     }

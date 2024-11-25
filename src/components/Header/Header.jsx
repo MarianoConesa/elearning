@@ -1,9 +1,13 @@
 import { Avatar, Box, Button, Grid, Icon, IconButton, Menu, MenuItem, TextField, Typography, useMediaQuery, useTheme } from "@mui/material"
 import useModal from "../../hooks/modals/useModal"
 import LoginModal from "../loginModals/LoginModal"
-import { Person, Search } from "@mui/icons-material"
-import { useEffect, useState } from "react"
+import { DarkMode, LightMode, Person, Search } from "@mui/icons-material"
+import { useState } from "react"
 import { useThemeContext } from "../../context/ThemeContext"
+import { dfltApiCall } from "../../hooks/api/useApiCall"
+import URL from "../../helpers/api_urls"
+
+const { LOGOUT } = URL
 
 const Header = ({ data, loader, userData, userLoader, update }) => {
     const svgImg = data && data[0].file
@@ -13,7 +17,7 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
     const open = Boolean(anchorEl)
     
     const theme = useTheme()
-    const { toggleTheme } = useThemeContext()
+    const { toggleTheme, isDarkMode } = useThemeContext()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     
@@ -22,6 +26,17 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
     }
     const handleClose = () => {
         setAnchorEl(null)
+    }
+
+    const logout = async () =>{
+        try {
+            await dfltApiCall('POST', LOGOUT)
+            await update()
+            handleClose()
+
+        }catch (error){
+            console.error('Error al cerrar sesion', error)
+        }
     }
 
     return (
@@ -64,7 +79,7 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                         InputProps={{
                             disableUnderline: true, // Elimina la línea inferior del TextField
                             sx: { fontSize: '1rem', color: colors.text.primary },
-                        }}
+                        }}// Validación de contraseñas
                     />
                 </Box>
 
@@ -130,8 +145,9 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                     >
                         <MenuItem onClick={handleClose}>Mis cursos</MenuItem>
                         <MenuItem onClick={handleClose}>Cuenta</MenuItem>
-                        <MenuItem onClick={handleClose}>Cerrar sesión</MenuItem>
+                        <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
                     </Menu>
+                    <IconButton onClick={toggleTheme}>{!isDarkMode ? <LightMode sx={{color: colors.logoWhite}}/> : <DarkMode/>}</IconButton>
                 </Box>
                 {!!openLogin && <LoginModal {...{ openLogin, hndlClLogin, type, update }} />}
             </Grid>

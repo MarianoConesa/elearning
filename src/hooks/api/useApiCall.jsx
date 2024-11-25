@@ -21,7 +21,7 @@ const dfltApiCall = async (method, addUrl, body, setState, setLoader) => {
       config.data = body
     }
     const response = await axios(config)
-    response.data.token && Cookies.set('token', response.data.token, { expires: 7, sameSite: `none`, secure: false })
+    response?.data.token && Cookies.set('token', response.data.token, { expires: 7, sameSite: `none`, secure: false })
     const data = response.data.message
     setState && setState(data)
     setLoader && setLoader(false)
