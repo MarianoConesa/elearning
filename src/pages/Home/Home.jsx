@@ -6,6 +6,7 @@ import Carousel from '../../components/Carousel';
 import { useEffect, useState } from 'react';
 import ProfileImageUploader from '../../components/ProfileImageUploader';
 import LeftMenu from '../../components/leftMenu/LeftMenu';
+import Footer from '../../components/Footer/Footer';
 
 const Home = ({ data, userData, loader, userLoader, update, categories, catLoader }) => {
     const images = [
@@ -18,10 +19,12 @@ const Home = ({ data, userData, loader, userLoader, update, categories, catLoade
         <Grid container sx={{marginTop: `5px`}}>
             <Header {...{ data, userData, loader, userLoader, update }} />
             
-            <Grid item xs={12} sx={{height: `90dvh`, overflow: `auto`}}>
+            <Grid item xs={12} sx={{minHeight: `81dvh`, overflow: `auto`}}>
             {/* <Carousel images={images} height='700px'></Carousel> */}
                     
             </Grid>
+
+            <Footer {...{ data, userData, loader, userLoader, update }}></Footer>
         </Grid>
     );
 };
