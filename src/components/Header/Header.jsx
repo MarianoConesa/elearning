@@ -133,7 +133,7 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                             onClick={handleClick}
                             sx={{ width: '40px', height: '40px', marginLeft: '10px', bgcolor: colors.primary.main }}
                         >
-                            {!userData?.profilePic ? <Person sx={{ height: '100%', width: '100%' }} /> : <Avatar src={userData?.profilePic} />}
+                            {!userData?.profilePic ? <Person sx={{ height: '100%', width: '100%', color: colors.logoWhite }} /> : <Avatar src={userData?.profilePic} />}
                         </IconButton>
                     )}
                     <Menu
