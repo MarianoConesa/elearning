@@ -14,14 +14,14 @@ const dfltApiCall = async (method, addUrl, body, setState, setLoader) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${Cookies.get('token')}`,
       },
-      withCredentials: true, // Para manejar cookies
+      withCredentials: true, 
     }
 
     if(method === 'POST'){
       config.data = body
     }
     const response = await axios(config)
-    response?.data.token && Cookies.set('token', response.data.token, { expires: 7, sameSite: `none`, secure: false })
+    response.data?.token && Cookies.set('token', response.data.token, { expires: 7, sameSite: 'Lax', secure: false }); //sameSite: none no funciona sin secure true (https)
     const data = response.data.message
     setState && setState(data)
     setLoader && setLoader(false)
