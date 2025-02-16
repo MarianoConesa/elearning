@@ -8,7 +8,7 @@ function App() {
     <>    
       <ThemeContextProvider>
         <AppRouter />
-      </ThemeContextProvider>,
+      </ThemeContextProvider>
     </>
   )
 }

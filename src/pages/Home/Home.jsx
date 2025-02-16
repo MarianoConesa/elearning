@@ -16,7 +16,7 @@ const Home = ({ data, userData, loader, userLoader, update, categories, catLoade
     ];
 
     return (
-        <Grid container sx={{marginTop: `5px`}}>
+        <Grid container>
             <Header {...{ data, userData, loader, userLoader, update }} />
             
             <Grid item xs={12} sx={{minHeight: `81dvh`, overflow: `auto`}}>
