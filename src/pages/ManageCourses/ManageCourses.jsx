@@ -1,14 +1,25 @@
 import { Grid, Card, Tooltip, useTheme, useMediaQuery } from "@mui/material"
 import Header from "../../components/Header/Header"
 import { Add } from "@mui/icons-material"
-import { useThemeContext } from "../../context/ThemeContext"
+import useModal from "../../hooks/modals/useModal"
+import CreateCourseModal from "../../components/CreateCourseModal"
 
 const ManageCourses = ({ data, userData, loader, userLoader, update }) => {
 
     const theme = useTheme()
-    const { toggleTheme, isDarkMode } = useThemeContext()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+    const { open: open, handleOpen: hndlOpn, handleClose: hndlCl } = useModal()
+
+    const categories = [
+        { id: 1, name: "Programación" },
+        { id: 2, name: "Diseño Gráfico" },
+        { id: 3, name: "Marketing Digital" },
+        { id: 4, name: "Fotografía" },
+        { id: 5, name: "Negocios y Finanzas" }
+    ];
+    
 
     return (
         <Grid container spacing={2}>
@@ -17,20 +28,21 @@ const ManageCourses = ({ data, userData, loader, userLoader, update }) => {
                 <Tooltip title="Añadir curso" arrow>
                     <Card 
                         sx={{ 
-                            width: { xs: "80vw", sm: "40vw", md: "30vh" }, 
-                            height: { xs: "80vw", sm: "40vw", md: "30vh" }, 
+                            width: isMobile ? "80vw" : "30vh", 
+                            height: isMobile ? "80vw" : "30vh", 
                             display: "flex", 
                             flexDirection: "column", 
                             justifyContent: "center", 
                             alignItems: "center", 
                             cursor: "pointer", 
                         }}
-                        onClick={() => console.log("Agregar curso")}
+                        onClick={() => hndlOpn()}
                     >
-                        <Add sx={{ fontSize: `10vh`, color: colors.primary.main}} />
+                        <Add sx={{ fontSize: isMobile ? "10vw" : "10vh", color: colors.primary.main}} />
                     </Card>
                 </Tooltip>
             </Grid>
+            {!!open && <CreateCourseModal {...{ open, hndlCl, categories }} />}
         </Grid>
     )
 }
