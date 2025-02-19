@@ -34,15 +34,29 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
         if (type === 'login') {
             return formData.email && formData.password
         }
-        return formData.email && formData.password && formData.name && formData.userName && formData.repeatPassword
+        return formData.email && 
+               formData.password.length >= 6 && 
+               formData.name && 
+               formData.userName && 
+               formData.repeatPassword &&
+               formData.password === formData.repeatPassword
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault()
 
-        if (type === 'register' && formData.password !== formData.repeatPassword) {
-            setErrors({ repeatPass: 'Las contraseñas no coinciden' })
-            return
+        if (type === 'register') {
+            let newErrors = {}
+            if (formData.password.length < 6) {
+                newErrors.password = 'La contraseña debe tener al menos 6 caracteres'
+            }
+            if (formData.password !== formData.repeatPassword) {
+                newErrors.repeatPass = 'Las contraseñas no coinciden'
+            }
+            if (Object.keys(newErrors).length > 0) {
+                setErrors(newErrors)
+                return
+            }
         }
 
         setErrors({})
@@ -136,6 +150,8 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                         autoComplete="current-password"
                         value={formData.password}
                         onChange={handleChange}
+                        error={!!errors.password}
+                        helperText={errors.password ?? ''}
                     />
 
                     {type === 'register' && (

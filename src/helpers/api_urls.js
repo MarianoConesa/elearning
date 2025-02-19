@@ -4,7 +4,8 @@ const URL = {
     LOGIN: 'login',
     LOGOUT: 'logout',
     REGISTER: 'register',
-    GET_CATEGORIES: 'getCategories'
+    GET_CATEGORIES: 'getCategories',
+    CREATE_COURSE: 'courses/create',
 }
 
 export default URL

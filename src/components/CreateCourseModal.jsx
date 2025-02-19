@@ -4,20 +4,25 @@ import {
 } from "@mui/material"
 import { Delete } from "@mui/icons-material"
 import { ModalBox } from "../StyledComponents"
+import { dfltApiCall } from '../hooks/api/useApiCall'
+import URL from '../helpers/api_urls'
+
+const {CREATE_COURSE} = URL
 
 const CreateCourseModal = ({ open, hndlCl, categories }) => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
-        thumbnail: null,
+        miniature: null,
         video: null,
         isPrivate: false,
         password: "",
-        selectedCategories: []
+        catArr: []
     })
+    const [auxCatArr, setAuxCatArr] = useState([])
 
     const theme = useTheme()
-    const isFormValid = formData.title && formData.selectedCategories.length > 0 && (!formData.isPrivate || formData.password)
+    const isFormValid = formData.title && formData.catArr.length > 0 && (!formData.isPrivate || formData.password)
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target
@@ -28,20 +33,27 @@ const CreateCourseModal = ({ open, hndlCl, categories }) => {
     }
 
     const handleCategoryChange = (event, newValue) => {
+        setAuxCatArr(newValue) 
+    
+        const selectedIds = categories.allLevel
+            .filter(cat => newValue.includes(cat.name)) 
+            .map(cat => cat.id) 
+    
         setFormData(prevState => ({
             ...prevState,
-            selectedCategories: newValue
+            catArr: selectedIds
         }))
     }
+    
 
     const handleFileChange = (event) => {
-        const { name, files } = event.target
+        const { name, files } = event.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: files[0] ? URL.createObjectURL(files[0]) : null
-        }))
-    }
-
+            [name]: files[0] ? window.URL.createObjectURL(files[0]) : null
+        }));
+    };
+    
     const removeFile = (field) => {
         setFormData(prevState => ({
             ...prevState,
@@ -51,10 +63,14 @@ const CreateCourseModal = ({ open, hndlCl, categories }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        if (formData.selectedCategories.length === 0) {
+        if (formData.catArr.length === 0) {
             alert("Debes seleccionar al menos una categoría")
             return
         }
+
+        dfltApiCall('POST', CREATE_COURSE ,formData)
+        // hndlCl()
+        
         console.log("Form Data Submitted:", formData)
         console.log(formData.video)
     }
@@ -89,23 +105,23 @@ const CreateCourseModal = ({ open, hndlCl, categories }) => {
                         />
                     <Autocomplete
                         multiple
-                        options={categories.map(cat => cat.name)}
-                        value={formData.selectedCategories}
+                        options={categories.allLevel.map(cat => cat.name)}
+                        value={formData.auxCatArr}
                         onChange={handleCategoryChange}
                         renderInput={(params) => <TextField {...params} label="Categorías" margin="normal" />}
                     />
                     <Box display="flex" alignItems="center" gap={2} mt={2}>
                         <Button variant="contained" component="label" fullWidth>
                             Subir Miniatura
-                            <input type="file" hidden name="thumbnail" onChange={handleFileChange} />
+                            <input type="file" hidden name="miniature" onChange={handleFileChange} />
                         </Button>
-                        {formData.thumbnail && (
-                            <IconButton onClick={() => removeFile("thumbnail")}>
+                        {formData.miniature && (
+                            <IconButton onClick={() => removeFile("miniature")}>
                                 <Delete color="error" />
                             </IconButton>
                         )}
                     </Box>
-                    {formData.thumbnail && <img src={formData.thumbnail} alt="Miniatura" style={{ width: "100%", marginTop: "10px" }} />}
+                    {formData.miniature && <img src={formData.miniature} alt="Miniatura" style={{ width: "100%", marginTop: "10px" }} />}
                     <Box display="flex" alignItems="center" gap={2} mt={2}>
                         <Button variant="contained" component="label" fullWidth>
                             Subir Video

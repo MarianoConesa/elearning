@@ -4,21 +4,13 @@ import { Add } from "@mui/icons-material"
 import useModal from "../../hooks/modals/useModal"
 import CreateCourseModal from "../../components/CreateCourseModal"
 
-const ManageCourses = ({ data, userData, loader, userLoader, update }) => {
+const ManageCourses = ({data, userData, categories, loader, userLoader, catLoader, update}) => {
 
     const theme = useTheme()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
     const { open: open, handleOpen: hndlOpn, handleClose: hndlCl } = useModal()
-
-    const categories = [
-        { id: 1, name: "Programación" },
-        { id: 2, name: "Diseño Gráfico" },
-        { id: 3, name: "Marketing Digital" },
-        { id: 4, name: "Fotografía" },
-        { id: 5, name: "Negocios y Finanzas" }
-    ];
     
 
     return (

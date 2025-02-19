@@ -5,19 +5,7 @@ import URL from '../../helpers/api_urls'
 
 const {GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES} = URL
 
-const ScreenHome = ({data, userData, loader, userLoader, update}) =>{
-    const [categories, setCategories] = useState()
-    const [catLoader, setCatLoader] = useState()
-    
-    
-
-    const updateCat = () =>{
-        dfltApiCall('GET', GET_CATEGORIES ,null,setCategories,setCatLoader)
-    }
-
-    useEffect(()=>{
-        updateCat()
-    }, [])
+const ScreenHome = ({data, userData, categories, loader, userLoader, catLoader, update}) =>{
 
     return <Home {...{data, userData, loader, userLoader, update, categories, catLoader}}/>
 }
