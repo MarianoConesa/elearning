@@ -5,31 +5,36 @@ import Cookies from 'js-cookie'
 const url = import.meta.env.VITE_APP_API
 
 const dfltApiCall = async (method, addUrl, body, setState, setLoader) => {
-  setLoader && setLoader(true)
+  setLoader && setLoader(true);
   try {
+    const isFormData = body instanceof FormData; // Detecta si el body es FormData
+
     const config = {
       method: method,
       url: `${url}${addUrl ?? ''}`,
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${Cookies.get('token')}`,
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }) // No establecer Content-Type si es FormData
       },
       withCredentials: true, 
+      data: body, // Puede ser JSON o FormData
+    };
+
+    const response = await axios(config);
+
+    if (response.data?.token) {
+      Cookies.set('token', response.data.token, { expires: 7, sameSite: 'Lax', secure: false });
     }
 
-    if(method === 'POST'){
-      config.data = body
-    }
-    const response = await axios(config)
-    response.data?.token && Cookies.set('token', response.data.token, { expires: 7, sameSite: 'Lax', secure: false }); //sameSite: none no funciona sin secure true (https)
-    const data = response.data.message
-    setState && setState(data)
-    setLoader && setLoader(false)
-    return data
+    const data = response.data.message;
+    setState && setState(data);
+    setLoader && setLoader(false);
+    return data;
   } catch (error) {
-    console.error(`failed api call: ${error}`)
-    setLoader && setLoader(false)
+    console.error(`failed api call: ${error}`);
+    setLoader && setLoader(false);
   }
-}
+};
+
 
 export { dfltApiCall }

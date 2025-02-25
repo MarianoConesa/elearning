@@ -61,19 +61,21 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
 
         setErrors({})
         const body = { email: formData.email, password: formData.password }
+        const registerBody = new FormData()
         const url = type === 'login' ? LOGIN : REGISTER
 
         if (type === 'register') {
-            body.profilePic = image
-            if (!image) delete body.profilePic
-            body.name = formData.name
-            body.username = formData.userName
+            registerBody.append('name', formData.name)
+            registerBody.append('email', formData.email)
+            registerBody.append('username', formData.userName)
+            registerBody.append('password', formData.password)
+            image && registerBody.append('profilePic',  image)
         }
-
+        const bodyToSend = type === 'login' ? body : registerBody
         try {
             setLoginLoader(true)
 
-            const response = await dfltApiCall('POST', url, body, setUserData, setLoginLoader)
+            const response = await dfltApiCall('POST', url, bodyToSend, setUserData, setLoginLoader)
 
             if (response) {
                 hndlClLogin()

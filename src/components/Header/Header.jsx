@@ -10,7 +10,7 @@ import URL from "../../helpers/api_urls"
 const { LOGOUT } = URL
 
 const Header = ({ data, loader, userData, userLoader, update }) => {
-    const svgImg = data && data[0].file
+    const svgImg = data && data[0]
     const { open: openLogin, handleOpen: hndlOpLogin, handleClose: hndlClLogin } = useModal()
     const [type, setType] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -37,6 +37,7 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
             console.error('Error al cerrar sesión', error)
         }
     }
+
 
     return (
         <Grid container direction="column" sx={{ width: '100%' }}>
@@ -103,6 +104,7 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                     <Menu anchorEl={anchorEl} open={open} onClose={handleClose} MenuListProps={{ 'aria-labelledby': 'basic-button' }}>
                         <MenuItem onClick={handleClose}>Mis cursos</MenuItem>
                         <MenuItem onClick={handleClose}>Cuenta</MenuItem>
+                        <MenuItem onClick={handleClose}>Mensajes</MenuItem>
                         <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
                     </Menu>
                     <IconButton onClick={toggleTheme}>{!isDarkMode ? <LightMode sx={{color: colors.logoWhite}}/> : <DarkMode/>}</IconButton>
