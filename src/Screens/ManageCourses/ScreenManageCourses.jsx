@@ -1,8 +1,8 @@
 import ManageCourses from '../../pages/ManageCourses/ManageCourses'
 
-const ScreenManageCourses = ({data, userData, categories, loader, userLoader, catLoader, update}) =>{
+const ScreenManageCourses = (props) =>{
 
-    return <ManageCourses {...{data, userData, categories, loader, userLoader, catLoader, update}}/>
+    return <ManageCourses {...props}/>
 }
 
 export default ScreenManageCourses

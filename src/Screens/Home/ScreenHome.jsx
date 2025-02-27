@@ -5,9 +5,9 @@ import URL from '../../helpers/api_urls'
 
 const {GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES} = URL
 
-const ScreenHome = ({data, userData, categories, loader, userLoader, catLoader, update}) =>{
+const ScreenHome = (props) =>{
 
-    return <Home {...{data, userData, loader, userLoader, update, categories, catLoader}}/>
+    return <Home {...props}/>
 }
 
 export default ScreenHome
