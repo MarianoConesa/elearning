@@ -5,7 +5,7 @@ import useModal from "../../hooks/modals/useModal"
 import CreateCourseModal from "../../components/CreateCourseModal"
 import CourseCard from "../../components/CourseCard"
 
-const ManageCourses = ({ categories, courses, ...props }) => {
+const ManageCourses = ({ catData, courseData, ...props }) => {
     const theme = useTheme()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -25,10 +25,10 @@ const ManageCourses = ({ categories, courses, ...props }) => {
                 sx={{ 
                     flexGrow: 1,
                     overflowY: "auto", 
-                    maxHeight: "calc(100vh - 64px)", // Ajustar altura restando la del Header
+                    maxHeight: "calc(100vh - 64px)",
                     padding: 2,
                     display: "flex",
-                    justifyContent: "center", // Centrar horizontalmente
+                    justifyContent: "center",
                 }}
             >
                 <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -37,13 +37,18 @@ const ManageCourses = ({ categories, courses, ...props }) => {
                         <Tooltip title="Añadir curso" arrow>
                             <Card
                                 sx={{
-                                    width: isMobile ? "80vw" : "40vh",
-                                    height: isMobile ? "80vw" : "30vh",
+                                    width: isMobile ? "80vw" : "40vh", 
+                                    height: isMobile ? "auto" : "40vh",
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
                                     alignItems: "center",
                                     cursor: "pointer",
+                                    maxWidth: 600,
+                                    borderRadius: "12px", 
+                                    boxShadow: theme.shadows[3],
+                                    transition: "0.3s",
+                                    '&:hover': { boxShadow: theme.shadows[6] }
                                 }}
                                 onClick={() => hndlOpn()}
                             >
@@ -53,19 +58,7 @@ const ManageCourses = ({ categories, courses, ...props }) => {
                     </Grid>
 
                     {/* Tarjetas de cursos */}
-                    {courses && courses.map(course => (
-                        <Grid item key={course.id}>
-                            <CourseCard course={course} />
-                        </Grid>
-                    ))}
-
-{courses && courses.map(course => (
-                        <Grid item key={course.id}>
-                            <CourseCard course={course} />
-                        </Grid>
-                    ))}
-
-{courses && courses.map(course => (
+                    {courseData && courseData.courses?.map(course => (
                         <Grid item key={course.id}>
                             <CourseCard course={course} />
                         </Grid>
@@ -73,7 +66,7 @@ const ManageCourses = ({ categories, courses, ...props }) => {
                 </Grid>
             </Grid>
 
-            {!!open && <CreateCourseModal {...{ open, hndlCl, categories }} />}
+            {!!open && <CreateCourseModal {...{ open, hndlCl, catData }} />}
         </Grid>
     )
 }

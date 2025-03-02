@@ -6,11 +6,12 @@ import { useState } from "react"
 import { useThemeContext } from "../../context/ThemeContext"
 import { dfltApiCall } from "../../hooks/api/useApiCall"
 import URL from "../../helpers/api_urls"
+import { useNavigate } from "react-router-dom"
 
 const { LOGOUT } = URL
 
-const Header = ({ data, loader, userData, userLoader, update }) => {
-    const svgImg = data && data[0]
+const Header = ({ initData, loader, userData, userLoader, update }) => {
+    const svgImg = initData && initData[0]
     const { open: openLogin, handleOpen: hndlOpLogin, handleClose: hndlClLogin } = useModal()
     const [type, setType] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -20,6 +21,9 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
     const { toggleTheme, isDarkMode } = useThemeContext()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+    const navigate = useNavigate()
+    const myCourses = import.meta.env.VITE_APP_MANAGECOURSES
     
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)
@@ -102,7 +106,7 @@ const Header = ({ data, loader, userData, userLoader, update }) => {
                         </IconButton>
                     )}
                     <Menu anchorEl={anchorEl} open={open} onClose={handleClose} MenuListProps={{ 'aria-labelledby': 'basic-button' }}>
-                        <MenuItem onClick={handleClose}>Mis cursos</MenuItem>
+                        <MenuItem onClick={() => {handleClose(); navigate(myCourses);}}>Mis cursos</MenuItem>
                         <MenuItem onClick={handleClose}>Cuenta</MenuItem>
                         <MenuItem onClick={handleClose}>Mensajes</MenuItem>
                         <MenuItem onClick={logout}>Cerrar sesión</MenuItem>

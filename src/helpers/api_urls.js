@@ -6,7 +6,8 @@ const URL = {
     REGISTER: 'register',
     GET_CATEGORIES: 'getCategories',
     CREATE_COURSE: 'courses/create',
-    GET_ALL_COURSES: 'courses/getAll'
+    GET_ALL_COURSES: 'courses/getAll',
+    GET_COURSE: 'courses/getById',
 }
 
 export default URL

@@ -5,25 +5,34 @@ import ScreenManageCourses from "../Screens/ManageCourses/ScreenManageCourses"
 import { useEffect, useState } from 'react'
 import { dfltApiCall } from '../hooks/api/useApiCall'
 import URL from '../helpers/api_urls'
+import ScreenCourse from "../Screens/Course/ScreenCourse"
 
 const {GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES,GET_ALL_COURSES} = URL
 
 const AppRouter = () =>{
-    const [data, setData] = useState()
+    const [initData, setInitData] = useState()
     const [userData, setUserData] = useState()
-    const [categories, setCategories] = useState()
+    const [catData, setCatData] = useState()
+    const [courseData, setCourseData] = useState()
     const [loader, setLoader] = useState()
     const [userLoader, setUserLoader] = useState()
     const [catLoader, setCatLoader] = useState()
-    const [courses, setCourses] = useState()
     const [coursesLoader, setCoursesLoader] = useState()
 
     const update = () =>{
+        updateUserData()
+        updateCourses()
+        dfltApiCall('GET', GET_INITIAL_IMAGES ,null,setInitData,setLoader)
+        dfltApiCall('GET', GET_CATEGORIES ,null,setCatData,setCatLoader)
+    }
+
+    const updateUserData = () =>{
         setUserData(null)
-        dfltApiCall('GET', GET_INITIAL_IMAGES ,null,setData,setLoader)
         dfltApiCall('GET', GET_USER_INFO ,null,setUserData,setUserLoader)
-        dfltApiCall('GET', GET_CATEGORIES ,null,setCategories,setCatLoader)
-        dfltApiCall('GET', GET_ALL_COURSES ,null,setCourses,setCoursesLoader)
+    }
+
+    const updateCourses = () =>{
+        dfltApiCall('GET', GET_ALL_COURSES ,null,setCourseData,setCoursesLoader)
     }
 
     useEffect(()=>{
@@ -31,11 +40,12 @@ const AppRouter = () =>{
     }, [])
 
     return <BrowserRouter>
-        <Routes>
-            <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{data, userData, categories, courses, loader, userLoader, catLoader, coursesLoader, update}}/>}></Route>
-            <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{data, userData, categories, courses, loader, userLoader, catLoader, coursesLoader, update}}/>}></Route>
-        </Routes>
-    </BrowserRouter>
+            <Routes>
+                <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
+                <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
+                <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
+            </Routes>
+        </BrowserRouter>
 
 }
 
