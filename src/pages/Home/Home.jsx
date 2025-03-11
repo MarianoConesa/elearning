@@ -1,12 +1,6 @@
-import { Button, Grid, Box, CircularProgress, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import PropTypes from 'prop-types';
-import Header from '../../components/Header/Header';
 //import Carousel from 'react-material-ui-carousel';
-import Carousel from '../../components/Carousel';
-import { useEffect, useState } from 'react';
-import ProfileImageUploader from '../../components/ProfileImageUploader';
-import LeftMenu from '../../components/leftMenu/LeftMenu';
-import Footer from '../../components/Footer/Footer';
 
 const Home = (props) => {
     const images = [
@@ -17,14 +11,10 @@ const Home = (props) => {
 
     return (
         <Grid container>
-            <Header {...props}/>
-            
             <Grid item xs={12} sx={{minHeight: `81dvh`, overflow: `auto`}}>
             {/* <Carousel images={images} height='700px'></Carousel> */}
                     
             </Grid>
-
-            <Footer></Footer>
         </Grid>
     );
 };

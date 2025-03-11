@@ -14,11 +14,6 @@ const ManageCourses = ({ catData, courseData, ...props }) => {
 
     return (
         <Grid container sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-            <Grid item xs="auto">
-                <Header {...props} />
-            </Grid>
-
-            {/* Contenedor principal con scroll */}
             <Grid 
                 item 
                 xs 

@@ -24,6 +24,7 @@ const Header = ({ initData, loader, userData, userLoader, update }) => {
 
     const navigate = useNavigate()
     const myCourses = import.meta.env.VITE_APP_MANAGECOURSES
+    const home = import.meta.env.VITE_APP_HOME
     
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)
@@ -55,7 +56,7 @@ const Header = ({ initData, loader, userData, userLoader, update }) => {
                 backgroundColor: colors.primary.main
             }}>
                 {/* Logo y título */}
-                <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: isMobile ? '10px' : '0' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: isMobile ? '10px' : '0', cursor: "pointer" }} onClick={()=>{navigate(home)}}>
                     {!loader && svgImg ? (
                         <Icon sx={{ height: `8vh`, width: `8vh`, paddingRight: '5px' }}>
                             <img style={{ height: '100%', width: '100%' }} src={svgImg} alt="Logo" />
