@@ -9,7 +9,7 @@ import URL from '../helpers/api_urls'
 
 const { CREATE_COURSE } = URL
 
-const CreateCourseModal = ({ open, hndlCl, categories, update }) => {
+const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -37,7 +37,7 @@ const CreateCourseModal = ({ open, hndlCl, categories, update }) => {
     const handleCategoryChange = (event, newValue) => {
         setAuxCatArr(newValue)
     
-        const selectedIds = categories.allLevel
+        const selectedIds = catData.allLevel
             .filter(cat => newValue.includes(cat.name)) 
             .map(cat => cat.id)
     
@@ -112,7 +112,7 @@ const CreateCourseModal = ({ open, hndlCl, categories, update }) => {
                 <Box component="form" onSubmit={handleSubmit}>
                     <TextField fullWidth label="Título" name="title" value={formData.title} onChange={handleChange} margin="normal" required />
                     <TextField fullWidth label="Descripción" name="description" value={formData.description} onChange={handleChange} margin="normal" multiline rows={4} />
-                    <Autocomplete multiple options={categories.allLevel.map(cat => cat.name)} value={auxCatArr} onChange={handleCategoryChange} renderInput={(params) => <TextField {...params} label="Categorías" margin="normal" />} />
+                    <Autocomplete multiple options={catData.allLevel.map(cat => cat.name)} value={auxCatArr} onChange={handleCategoryChange} renderInput={(params) => <TextField {...params} label="Categorías" margin="normal" />} />
                     
                     <Box display="flex" flexDirection={isMobile ? "column" : "row"} alignItems="center" gap={2} mt={2}>
                         <Button variant="contained" component="label" fullWidth>Subir Miniatura<input type="file" hidden name="miniature" onChange={handleFileChange} /></Button>
