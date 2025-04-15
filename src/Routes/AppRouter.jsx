@@ -8,7 +8,6 @@ import URL from '../helpers/api_urls'
 import ScreenCourse from "../Screens/Course/ScreenCourse"
 import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
-import Filters from "../components/Filters"
 
 const {GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES,GET_ALL_COURSES} = URL
 
@@ -21,8 +20,7 @@ const AppRouter = () =>{
     const [userLoader, setUserLoader] = useState()
     const [catLoader, setCatLoader] = useState()
     const [coursesLoader, setCoursesLoader] = useState()
-
-    const [filteredCourses, setFilteredCourses] = useState()
+    const [filterCat, setFilterCat] = useState([])
 
     const update = () =>{
         updateUserData()
@@ -44,19 +42,11 @@ const AppRouter = () =>{
         update()
     }, [])
 
-    useEffect(()=>{
-        setFilteredCourses(courseData)
-    }, [courseData])
-
     return <BrowserRouter>
             <Header {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>
-            {/* <Filters categories={catData} onFilterChange={(filters) => {
-            console.log("Filtros aplicados:", filters);
-            // Aquí puedes hacer fetch, filtrar cursos, etc.
-}} /> */}
             <Routes>
-                <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
-                <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
+                <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{initData, userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
+                <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{initData, userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
                 <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
             </Routes>
             <Footer/>

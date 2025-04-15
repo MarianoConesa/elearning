@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material';
 import PropTypes from 'prop-types';
+import CourseCardsMenu from '../../components/CourseCardsMenu';
 //import Carousel from 'react-material-ui-carousel';
 
 const Home = (props) => {
@@ -12,7 +13,7 @@ const Home = (props) => {
     return (
         <Grid container>
             <Grid item xs={12} sx={{minHeight: `81dvh`, overflow: `auto`}}>
-            {/* <Carousel images={images} height='700px'></Carousel> */}
+                <CourseCardsMenu {...props}/>
                     
             </Grid>
         </Grid>

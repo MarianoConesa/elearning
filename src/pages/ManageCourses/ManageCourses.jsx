@@ -7,7 +7,7 @@ const ManageCourses = (props) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
     return (
-        <CourseCardsMenu {...props}/>
+        <CourseCardsMenu enableCreate = {true} {...props}/>
     )
 }
 
