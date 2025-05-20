@@ -16,12 +16,14 @@ import {
   import AddCourseBtn from "./AddCourseBtn"
 import FilterButtons from "./FilterButtons"
   
-  const CourseCardsMenu = ({ enableCreate, catData, courseData, filterCat, setFilterCat, ...props }) => {
+  const CourseCardsMenu = ({ ownCourses, loader, onUpdate, catData, courseData, filterCat, setFilterCat, tab, ...props }) => {
     const theme = useTheme()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
   
     const { open, handleOpen: hndlOpn, handleClose: hndlCl } = useModal()
+
+    const courses = ownCourses ?? courseData
 
   
     return (
@@ -45,10 +47,10 @@ import FilterButtons from "./FilterButtons"
         >
           <Grid container spacing={2} justifyContent="center" alignItems="center">
             {/* Botón para añadir curso */}
-            {enableCreate && <AddCourseBtn {...{hndlOpn, colors, isMobile, theme}}/>}
+            {tab === 'owned' && <AddCourseBtn {...{hndlOpn, colors, isMobile, theme}}/>}
   
             {/* Tarjetas de cursos */}
-            {courseData && courseData.courses?.filter((course) => (filterCat.length === 0 || course.categories.some(catId => filterCat.includes(catId)))).map((course) => (
+            {courses && courses.courses?.filter((course) => (filterCat.length === 0 || course.categories.some(catId => filterCat.includes(catId)))).map((course) => (
               <Grid item key={course.id}>
                 <CourseCard course={course} />
               </Grid>

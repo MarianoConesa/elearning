@@ -18,7 +18,7 @@ const Course = ({ id, course, courseLoader }) => {
     }
 
     return (
-        <Box minHeight="100vh" bgcolor={theme.palette.background.default}>
+        <Box bgcolor={"theme.palette.background.default"}>
             {/* Contenido principal del curso */}
             <Grid
                 container
@@ -32,7 +32,7 @@ const Course = ({ id, course, courseLoader }) => {
                     backgroundColor: theme.palette.background.paper,
                     borderRadius: "12px",
                     boxShadow: theme.shadows[3],
-                    minHeight: "calc(100vh - 100px)", // Ajusta si el header es más alto o diferente
+                    minHeight: "calc(90vh - 100px)", // Ajusta si el header es más alto o diferente
                 }}
             >
                 {/* Información del curso */}
@@ -54,7 +54,7 @@ const Course = ({ id, course, courseLoader }) => {
                 {/* Video del curso */}
                 {course.video && (
                     <Grid item>
-                        <Box display="flex" justifyContent="center" sx={{ width: "100%", backgroundColor: "red" }}>
+                        <Box display="flex" justifyContent="center" sx={{ width: "100%", maxHeight: "55vh", backgroundColor: "red", overflow: 'auto' }}>
                             {/* <video
                                 controls
                                 style={{

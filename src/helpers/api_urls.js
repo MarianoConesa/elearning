@@ -8,6 +8,9 @@ const URL = {
     CREATE_COURSE: 'courses/create',
     GET_ALL_COURSES: 'courses/getAll',
     GET_COURSE: 'courses/getById',
+    GET_OWNED_COURSES: 'courses/getOwned',
+    GET_FOLLOWED_COURSES: 'courses/getFollowed',
+    GET_COMPLETED_COURSES: 'courses/getEnded',
 }
 
 export default URL
