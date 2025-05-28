@@ -12,7 +12,7 @@ const ManageCourses = (props) => {
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-    const [tab, setTab] = useState('owned')
+    const [tab, setTab] = useState('followed')
     const [courses, setCourses] = useState([])
     const [coursesLoader, setCoursesLoader] = useState()
 

@@ -8,7 +8,7 @@ const TABS = [
 ]
 
 const ManageCourseTabs = ({ onChange }) => {
-    const [selected, setSelected] = useState('owned')
+    const [selected, setSelected] = useState('followed')
     const theme = useTheme()
 
     const handleTabClick = (key) => {

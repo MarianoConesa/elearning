@@ -52,10 +52,14 @@ const CourseVideo = ({ url, markers = [] }) => {
                 display="flex"
                 justifyContent="center"
                 sx={{
-                    width: '100%',
+                    width: '90vw',              // Ocupa el 90% del viewport horizontal
+                    maxWidth: '1100px',         // No crece más allá de 1000px
+                    // minWidth: '320px',          // No se reduce más de 320px
+                    aspectRatio: '16 / 9',      // Mantiene relación 16:9
                     borderRadius: '12px',
                     overflow: 'hidden',
                     boxShadow: theme.shadows[3],
+                    margin: '0 auto',
                 }}
             >
                 <ReactPlayer
@@ -68,36 +72,50 @@ const CourseVideo = ({ url, markers = [] }) => {
                 />
             </Box>
 
-            {/* Lista de marcadores */}
+
+
+            {/* Lista de marcadores
             {markers.length > 0 && (
-                <Box mt={3}>
-                    <Typography variant="h6" gutterBottom>
-                        Marcadores del video
-                    </Typography>
-                    <List>
-                        {markers.map((marker, index) => (
-                            <ListItem
-                                key={index}
-                                button
-                                onClick={() => handleSeek(marker.time)}
-                                selected={index === activeIndex}
-                                sx={{
-                                    borderRadius: 1,
-                                    backgroundColor:
-                                        index === activeIndex
-                                            ? theme.palette.action.selected
-                                            : 'transparent',
-                                }}
-                            >
-                                <ListItemText
-                                    primary={marker.label}
-                                    secondary={formatTime(marker.time)}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
-            )}
+                <Box
+                mt={3}
+                maxHeight="200px"
+                overflow="auto"
+                pr={1}
+                sx={{
+                    scrollbarWidth: "none",
+                    "&::-webkit-scrollbar": {
+                        display: "none"
+                    }
+                }}
+            >
+                <Typography variant="h6" gutterBottom>
+                    Marcadores del video
+                </Typography>
+                <List>
+                    {markers.map((marker, index) => (
+                        <ListItem
+                            key={index}
+                            button
+                            onClick={() => handleSeek(marker.time)}
+                            selected={index === activeIndex}
+                            sx={{
+                                borderRadius: 1,
+                                backgroundColor:
+                                    index === activeIndex
+                                        ? theme.palette.action.selected
+                                        : 'transparent',
+                            }}
+                        >
+                            <ListItemText
+                                primary={marker.label}
+                                secondary={formatTime(marker.time)}
+                            />
+                        </ListItem>
+                    ))}
+                </List>
+            </Box>
+            
+            )} */}
         </Box>
     )
 }
