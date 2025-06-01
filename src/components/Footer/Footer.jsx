@@ -2,7 +2,7 @@ import { Box, Grid, IconButton, Typography, useTheme, useMediaQuery } from "@mui
 import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material"
 import { useThemeContext } from "../../context/ThemeContext"
 
-const Footer = ({ data, loader, userData, userLoader, update }) => {
+const Footer = () => {
     const theme = useTheme()
     const { isDarkMode } = useThemeContext()
     const colors = { ...theme.palette }

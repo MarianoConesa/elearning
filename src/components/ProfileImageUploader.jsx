@@ -1,27 +1,24 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { colors } from '../helpers/colors'
-import { Button, Box, Avatar, Typography } from '@mui/material'
+import React, { useState, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { colors } from '../helpers/colors';
+import { Button, Box, Avatar, Typography } from '@mui/material';
 
-const ProfileImageUploader = ({image, setImage}) => {
+const ProfileImageUploader = ({ image, setImage }) => {
+  const [preview, setPreview] = useState(null); // Vista previa de la imagen
 
   const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0]
+    const file = acceptedFiles[0];
     if (file) {
-      setImage(file)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImage(reader.result)
-      }
-      reader.readAsDataURL(file)
+      setImage(file); // Guardar el archivo en el estado (para enviar a Laravel)
+      setPreview(URL.createObjectURL(file)); // Crear una URL de vista previa
     }
-  }, [])
+  }, [setImage]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: 'image/*',
     multiple: false,
-  })
+  });
 
   return (
     <Box
@@ -35,7 +32,7 @@ const ProfileImageUploader = ({image, setImage}) => {
       <Box
         {...getRootProps()}
         sx={{
-          border: `2px solid ${colors.lightGray}` ,
+          border: `2px solid ${colors.lightGray}`,
           padding: '20px',
           textAlign: 'center',
           cursor: 'pointer',
@@ -50,9 +47,9 @@ const ProfileImageUploader = ({image, setImage}) => {
         }}
       >
         <input {...getInputProps()} />
-        {image ? (
+        {preview ? (
           <Avatar
-            src={image}
+            src={preview}
             sx={{
               width: '100%',
               height: '100%',
@@ -68,7 +65,7 @@ const ProfileImageUploader = ({image, setImage}) => {
         )}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default ProfileImageUploader
+export default ProfileImageUploader;
