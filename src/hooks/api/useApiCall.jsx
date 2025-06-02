@@ -14,6 +14,7 @@ const dfltApiCall = async (method, addUrl, body, setState, setLoader) => {
       url: `${url}${addUrl ?? ''}`,
       headers: {
         'Authorization': `Bearer ${Cookies.get('token')}`,
+        'Accept': 'application/json',
         ...(isFormData ? {} : { 'Content-Type': 'application/json' }) // No establecer Content-Type si es FormData
       },
       withCredentials: true, 
