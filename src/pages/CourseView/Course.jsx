@@ -1,21 +1,51 @@
-import { Avatar, Box, Button, CircularProgress, Grid, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material"
+import {
+    Avatar, Box, Button, CircularProgress, Grid,
+    IconButton, Typography, useMediaQuery, useTheme
+} from "@mui/material"
 import { FavoriteBorder } from "@mui/icons-material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CourseVideo from "../../components/CourseVideo"
 import { dfltApiCall } from "../../hooks/api/useApiCall"
 import URL from "../../helpers/api_urls"
 
-const { FOLLOW } = URL
+const { FOLLOW, UNFOLLOW, COMPLETE } = URL
 
-const Course = ({ id, course, courseLoader }) => {
+const Course = ({ id, course, courseLoader, userData, update, updateUserData, updateCourses, userLoader }) => {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
     const [likes, setLikes] = useState(course?.likes || 0)
 
+    const [followed, setFollowed] = useState(null)
+    const [ended, setEnded] = useState(null)
+    const owned = course?.user?.id === userData?.id
+
     const videos = course?.videos || []
     const [activeVideoIndex, setActiveVideoIndex] = useState(0)
 
-    if (courseLoader) {
+    useEffect(() => {
+        if (userData) {
+            setFollowed(userData.followed.includes(Number(id)))
+            setEnded(userData.ended.includes(Number(id)))
+        }
+        console.log({followed, ended, userData, id})
+    }, [userData, id])
+
+    const handleFollow = async () => {
+        await dfltApiCall("POST", FOLLOW, { id })
+        await updateUserData()
+    }
+
+    const handleUnfollow = async () => {
+        await dfltApiCall("POST", UNFOLLOW, { id })
+        await updateUserData()
+    }
+
+    const handleComplete = async () => {
+        await dfltApiCall("POST", COMPLETE, { id })
+        await updateUserData()
+    }
+
+    if (courseLoader || userLoader || followed === null || ended === null) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
                 <CircularProgress color="primary" />
@@ -87,33 +117,46 @@ const Course = ({ id, course, courseLoader }) => {
                 )}
 
                 {/* Botones de interacción */}
-                <Grid item sx={{ mt: 2 }}>
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Box display="flex" alignItems="center" gap={1}>
-                            <IconButton
-                                size="large"
-                                color="secondary"
-                                onClick={() => setLikes(likes + 1)}
-                            >
-                                <FavoriteBorder />
-                            </IconButton>
-                            <Typography variant="body1" color="text.primary">
-                                {likes}
-                            </Typography>
+                {followed !== null && ended !== null && (
+                    <Grid item sx={{ mt: 2 }}>
+                        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
+                            <Box display="flex" alignItems="center" gap={1}>
+                                <IconButton
+                                    size="large"
+                                    color="secondary"
+                                    onClick={() => setLikes(likes + 1)}
+                                >
+                                    <FavoriteBorder />
+                                </IconButton>
+                                <Typography variant="body1" color="text.primary">
+                                    {likes}
+                                </Typography>
+                            </Box>
+
+                                <Box display="flex" gap={1}>
+                                    {ended ? (
+                                        <Button variant="contained" color="success" size="small" onClick={handleFollow}>
+                                            Continuar curso
+                                        </Button>
+                                    ) : followed ? (
+                                        <Button variant="contained" color="warning" size="small" onClick={handleComplete}>
+                                            Terminar curso
+                                        </Button>
+                                    ) : (
+                                        <Button variant="contained" color="primary" size="small" onClick={handleFollow}>
+                                            Seguir curso
+                                        </Button>
+                                    )}
+
+                                    {(followed || ended) && (
+                                        <Button variant="outlined" color="error" size="small" onClick={handleUnfollow}>
+                                            Abandonar curso
+                                        </Button>
+                                    )}
+                                </Box>
                         </Box>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size={isMobile ? "small" : "medium"}
-                            sx={{ borderRadius: "8px" }}
-                            onClick={() => {
-                                dfltApiCall("POST", FOLLOW, { id }, null, null)
-                            }}
-                        >
-                            <Typography>{'Seguir'}</Typography>
-                        </Button>
-                    </Box>
-                </Grid>
+                    </Grid>
+                )}
             </Grid>
         </Box>
     )

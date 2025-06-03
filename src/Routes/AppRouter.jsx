@@ -47,7 +47,7 @@ const AppRouter = () =>{
             <Routes>
                 <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{initData, userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
                 <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{initData, userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
-                <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update}}/>}/>
+                <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, updateUserData, updateCourses}}/>}/>
             </Routes>
             <Footer/>
         </BrowserRouter>
