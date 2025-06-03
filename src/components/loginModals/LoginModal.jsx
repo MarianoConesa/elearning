@@ -179,6 +179,10 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                         </Typography>
                     )}
 
+<a href={`${import.meta.env.VITE_APP_API}/auth/google/redirect`}>
+  Iniciar sesión con Google
+</a>
+
                     <Button
                         type="submit"
                         fullWidth
