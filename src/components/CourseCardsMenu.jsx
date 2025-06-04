@@ -38,8 +38,6 @@ import FilterButtons from "./FilterButtons"
           xs
           sx={{
             flexGrow: 1,
-            overflowY: "auto",
-            maxHeight: "calc(100vh - 64px)",
             padding: 2,
             display: "flex",
             justifyContent: "center"

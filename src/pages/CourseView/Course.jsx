@@ -56,8 +56,7 @@ const Course = ({ id, course, courseLoader, userData, update, updateUserData, up
     return (
         <Box bgcolor={theme.palette.background.default}
             sx={{
-                height: "calc(100vh - 64px - 100px)",
-                overflowY: "auto",
+                width: '100%',
                 pr: 1.5,
                 scrollbarWidth: "none",
                 "&::-webkit-scrollbar": { display: "none" }
@@ -119,7 +118,7 @@ const Course = ({ id, course, courseLoader, userData, update, updateUserData, up
                 {/* Botones de interacción */}
                 {followed !== null && ended !== null && (
                     <Grid item sx={{ mt: 2 }}>
-                        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
+                        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2} sx={{padding: '30px'}}>
                             <Box display="flex" alignItems="center" gap={1}>
                                 <IconButton
                                     size="large"

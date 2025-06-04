@@ -12,7 +12,7 @@ const Home = (props) => {
 
     return (
         <Grid container>
-            <Grid item xs={12} sx={{minHeight: `81dvh`, overflow: `auto`}}>
+            <Grid item xs={12} sx={{minHeight: `81dvh`}}>
                 <CourseCardsMenu {...props}/>
                     
             </Grid>
