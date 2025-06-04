@@ -8,6 +8,7 @@ const URL = {
     LOGIN: 'login',
     LOGOUT: 'logout',
     REGISTER: 'register',
+    FORGOT_PASSWORD: 'forgotPassword',
     GET_CATEGORIES: 'getCategories',
     CREATE_COURSE: 'courses/create',
     GET_ALL_COURSES: 'courses/getAll',

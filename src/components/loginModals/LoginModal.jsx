@@ -7,7 +7,7 @@ import URL from "../../helpers/api_urls"
 import { dfltApiCall } from "../../hooks/api/useApiCall"
 import ProfileImageUploader from "../ProfileImageUploader"
 
-const { LOGIN, REGISTER } = URL
+const { LOGIN, REGISTER, FORGOT_PASSWORD } = URL
 
 const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
     const [userData, setUserData] = useState()
@@ -85,6 +85,29 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
             }
         } catch (error) {
             console.error('Error durante la solicitud:', error)
+        }
+    }
+
+    const handleForgotPassword = async () => {
+        if (!formData.email) {
+            setErrors({ userNotFound: 'Introduce tu email para recuperar la contraseña' })
+            return
+        }
+    
+        try {
+            setLoginLoader(true)
+            const body = { email: formData.email }
+    
+            const response = await dfltApiCall("POST", FORGOT_PASSWORD, body)
+    
+            if (response) {
+                alert("Se ha enviado un correo con instrucciones para recuperar tu contraseña.")
+            }
+        } catch (error) {
+            console.error("Error al enviar email de recuperación:", error)
+            alert("No se pudo enviar el correo de recuperación. Inténtalo más tarde.")
+        } finally {
+            setLoginLoader(false)
         }
     }
 
@@ -179,9 +202,20 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                         </Typography>
                     )}
 
-<a href={`${import.meta.env.VITE_APP_API}/auth/google/redirect`}>
-  Iniciar sesión con Google
-</a>
+                    <a href={`${import.meta.env.VITE_APP_API}/auth/google/redirect`}>
+                    Iniciar sesión con Google
+                    </a>
+
+                    {type === 'login' && (
+                        <Button
+                            onClick={handleForgotPassword}
+                            fullWidth
+                            variant="text"
+                            sx={{ textTransform: "none", color: colors.primary.main }}
+                        >
+                            He olvidado mi contraseña
+                        </Button>
+                    )}
 
                     <Button
                         type="submit"
