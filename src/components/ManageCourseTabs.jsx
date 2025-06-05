@@ -18,40 +18,43 @@ const ManageCourseTabs = ({ onChange }) => {
 
     return (
         <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            bgcolor={theme.palette.background.paper}
-            py={2}
-            boxShadow={theme.shadows[1]}
-            gap={2}
-        >
-            {TABS.map(({ key, label, color }) => {
-                const isSelected = selected === key
-
-                return (
-                    <Box
-                        key={key}
-                        onClick={() => handleTabClick(key)}
-                        sx={{
-                            px: 3,
-                            py: 1,
-                            borderRadius: 2,
-                            cursor: 'pointer',
-                            backgroundColor: isSelected ? color : 'transparent',
-                            color: isSelected ? theme.palette.common.white : theme.palette.text.primary,
-                            fontWeight: isSelected ? 'bold' : 'normal',
-                            transition: 'all 0.2s ease-in-out',
-                            '&:hover': {
-                                backgroundColor: isSelected ? color : theme.palette.action.hover,
-                            }
-                        }}
-                    >
-                        {label}
-                    </Box>
-                )
-            })}
-        </Box>
+        display="flex"
+        justifyContent="space-evenly"
+        alignItems="center"
+        bgcolor={theme.palette.background.paper}
+        py={2}
+        boxShadow={theme.shadows[1]}
+        sx={{width: '100%'}}
+      >
+        {TABS.map(({ key, label, color }) => {
+          const isSelected = selected === key
+      
+          return (
+            <Box
+              key={key}
+              onClick={() => handleTabClick(key)}
+              sx={{
+                flex: 1, // ← cada tab ocupa mismo ancho
+                textAlign: "center",
+                px: 3,
+                py: 1,
+                borderRadius: 0,
+                cursor: "pointer",
+                backgroundColor: isSelected ? color : "transparent",
+                color: isSelected ? theme.palette.common.white : theme.palette.text.primary,
+                fontWeight: isSelected ? "bold" : "normal",
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  backgroundColor: isSelected ? color : theme.palette.action.hover,
+                },
+              }}
+            >
+              {label}
+            </Box>
+          )
+        })}
+      </Box>
+      
     )
 }
 
