@@ -110,8 +110,7 @@ const Header = ({ initData, loader, userData, userLoader, update }) => {
                     <Menu anchorEl={anchorEl} open={open} onClose={handleClose} MenuListProps={{ 'aria-labelledby': 'basic-button' }}>
                         <MenuItem onClick={() => {handleClose(); navigate(myCourses);}}>Mis cursos</MenuItem>
                         <MenuItem onClick={() => {handleClose(); navigate(profile);}}>Cuenta</MenuItem>
-                        <MenuItem onClick={handleClose}>Mensajes</MenuItem>
-                        <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
+                        <MenuItem onClick={() => {logout(); navigate(home)}}>Cerrar sesión</MenuItem>
                     </Menu>
                     <IconButton onClick={toggleTheme}>{!isDarkMode ? <LightMode sx={{color: colors.logoWhite}}/> : <DarkMode/>}</IconButton>
                 </Box>
