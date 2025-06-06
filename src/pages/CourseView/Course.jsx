@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import CourseVideo from "../../components/CourseVideo"
 import { dfltApiCall } from "../../hooks/api/useApiCall"
 import URL from "../../helpers/api_urls"
+import VideoInfoBox from "../../components/VideoInfoBox/VideoInfoBox"
 
 const { FOLLOW, UNFOLLOW, COMPLETE } = URL
 
@@ -45,7 +46,7 @@ const Course = ({ id, course, courseLoader, userData, update, updateUserData, up
         await updateUserData()
     }
 
-    if (courseLoader || userLoader || followed === null || ended === null) {
+    if (courseLoader || userLoader) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
                 <CircularProgress color="primary" />
@@ -114,6 +115,9 @@ const Course = ({ id, course, courseLoader, userData, update, updateUserData, up
                         </Box>
                     </Grid>
                 )}
+
+                {/*Descripción y comentarios*/}
+                <VideoInfoBox {...{course, userData}}/>
 
                 {/* Botones de interacción */}
                 {followed !== null && ended !== null && (

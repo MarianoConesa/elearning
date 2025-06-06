@@ -17,6 +17,9 @@ const URL = {
     GET_OWNED_COURSES: 'courses/getOwned',
     GET_FOLLOWED_COURSES: 'courses/getFollowed',
     GET_COMPLETED_COURSES: 'courses/getEnded',
+    GET_COMMENTS: 'getComments',
+    CREATE_COMMENT: 'createComment',
+    REMOVE_COMMENT: 'removeComment',
 }
 
 export default URL
