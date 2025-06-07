@@ -1,4 +1,5 @@
 import { Avatar, Box, Button, CircularProgress, Grid, Icon, IconButton, Menu, MenuItem, TextField, Typography, useMediaQuery, useTheme } from "@mui/material"
+import SendIcon from '@mui/icons-material/Send'
 import useModal from "../../hooks/modals/useModal"
 import LoginModal from "../loginModals/LoginModal"
 import { DarkMode, LightMode, Person, Search } from "@mui/icons-material"
@@ -10,8 +11,9 @@ import { useNavigate } from "react-router-dom"
 
 const { LOGOUT } = URL
 
-const Header = ({ initData, loader, userData, userLoader, update }) => {
+const Header = ({ initData, loader, userData, userLoader, update, handleSearch }) => {
     const svgImg = initData && initData[0]
+    const [searchText, setSearchText] = useState("")
     const { open: openLogin, handleOpen: hndlOpLogin, handleClose: hndlClLogin } = useModal()
     const [type, setType] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -44,6 +46,14 @@ const Header = ({ initData, loader, userData, userLoader, update }) => {
         }
     }
 
+    const handleSearchSubmit = () => {
+        //console.log("Buscar:", searchText)  // Aquí puedes poner tu lógica
+        handleSearch(searchText)
+        setSearchText("")
+        navigate(home)
+    }
+    
+
 
     return (
         <Grid container direction="column" sx={{ width: '100%' }}>
@@ -57,41 +67,50 @@ const Header = ({ initData, loader, userData, userLoader, update }) => {
                 backgroundColor: colors.primary.main
             }}>
                 {/* Logo y título */}
-                <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: isMobile ? '10px' : '0', cursor: "pointer" }} onClick={()=>{navigate(home)}}>
+                <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: isMobile ? '10px' : '0', cursor: "pointer" }} onClick={()=>{navigate(home); update()}}>
                     {!loader && svgImg ? (
                         <Icon sx={{ height: `8vh`, width: `8vh`, paddingRight: '5px' }}>
                             <img style={{ height: '100%', width: '100%' }} src={svgImg} alt="Logo" />
                         </Icon>
                     ) : <CircularProgress sx={{ padding: `10px`, color: colors.logoWhite }}/>}
-                    <Typography variant={isMobile ? 'h6' : 'h3'} fontFamily="serif" sx={{ color: colors.logoWhite }}>Elearning</Typography>
+                    <Typography variant={isMobile ? 'h4' : 'h3'} fontFamily="serif" sx={{ color: colors.logoWhite }}>Elearning</Typography>
                 </Box>
 
                 {/* Barra de búsqueda */}
                 {!isMobile && (
                     <Box 
-                        sx={{
-                            flexGrow: 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                            maxWidth: '600px',
-                            margin: '0 20px',
-                            padding: '0 10px',
-                            borderRadius: '50px',
-                            backgroundColor: colors.background.paper,
-                            boxShadow: theme.shadows[1],
+                    sx={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        maxWidth: '600px',
+                        margin: '0 20px',
+                        padding: '0 10px',
+                        borderRadius: '50px',
+                        backgroundColor: colors.background.paper,
+                        boxShadow: theme.shadows[1],
+                    }}
+                >
+                    <Search sx={{ color: colors.text.secondary, marginRight: '10px' }} />
+                    <TextField
+                        fullWidth
+                        variant="standard"
+                        placeholder="Buscar cursos..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSearchSubmit()
                         }}
-                    >
-                        <Search sx={{ color: colors.text.secondary, marginRight: '10px' }} />
-                        <TextField
-                            fullWidth
-                            variant="standard"
-                            placeholder="Buscar cursos..."
-                            InputProps={{
-                                disableUnderline: true,
-                                sx: { fontSize: '1rem', color: colors.text.primary },
-                            }}
-                        />
-                    </Box>
+                        InputProps={{
+                            disableUnderline: true,
+                            sx: { fontSize: '1rem', color: colors.text.primary },
+                        }}
+                    />
+                    {searchText.length > 0 && 
+                    (<IconButton onClick={handleSearch}>
+                        <SendIcon sx={{ color: colors.text.secondary, fontSize: '0.70em' }} />
+                    </IconButton>)}
+                </Box>
                 )}
 
                 {/* Botones de usuario */}

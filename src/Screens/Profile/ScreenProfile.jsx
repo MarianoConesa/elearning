@@ -1,8 +1,8 @@
 import Profile from '../../pages/Profile/Profile'
 
-const ScreenHome = (props) =>{
+const ScreenProfile = (props) =>{
 
     return <Profile {...props}/>
 }
 
-export default ScreenHome
+export default ScreenProfile

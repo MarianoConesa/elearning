@@ -1,6 +1,7 @@
 const URL = {
     GET_INITIAL_IMAGES: `images/initialImages`,
     GET_USER_INFO: 'user/initialInfo',
+    GET_FOREIGN_USER_INFO: 'user/getUserInfo',
     UPDATE_USER_INFO: 'user/updateUser',
     UPDATE_USER_PASSWORD: 'user/updatePassword',
     FOLLOW: 'user/followCourse',
@@ -17,6 +18,8 @@ const URL = {
     GET_OWNED_COURSES: 'courses/getOwned',
     GET_FOLLOWED_COURSES: 'courses/getFollowed',
     GET_COMPLETED_COURSES: 'courses/getEnded',
+    GET_USER_COURSES: 'courses/getByUserId',
+    SEARCH_COURSES: 'courses/search',
     GET_COMMENTS: 'getComments',
     CREATE_COMMENT: 'createComment',
     REMOVE_COMMENT: 'removeComment',

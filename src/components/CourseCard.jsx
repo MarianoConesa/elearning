@@ -36,21 +36,22 @@ const CourseCard = ({ course }) => {
                 }}
             />
             <CardContent sx={{ display: "flex", alignItems: "flex-start", gap: 2, width: "100%" }}>
-                <Avatar src={course.user?.profilePic} alt={course.user?.name} />
+                <Avatar src={course.user?.profilePic} alt={course.user?.name} sx={{cursor: 'pointer'}} 
+                onClick={(event) => {
+                            event.stopPropagation() // Evita que el Card capture el click
+                            navigate(`${import.meta.env.VITE_APP_FOREIGN_PROFILE}${course.user.id}`)
+                        }}></Avatar>
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%" }}>
                     <Typography variant="h6" noWrap>{course.title}</Typography>
                     <Typography variant="body2" color="text.secondary">{course.user?.name}</Typography>
                     <Typography variant="body2" color="text.secondary">{new Date(course.created_at).toLocaleDateString()}</Typography>
-                    <Box display="flex" alignItems="center" gap={1} mt={1}>
-                        <IconButton size="small" color="secondary"
-                        onClick={(event) => {
-                            event.stopPropagation() // Evita que el Card capture el click
-                            console.log("Like clicked")
-                        }}>
-                            <FavoriteBorder />
-                        </IconButton>
-                        {course.likes > 0 && <Typography variant="body2">{course.likes}</Typography>}
-                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                        {course.description
+                            ? course.description.length > 20
+                                ? `${course.description.slice(0, 20)}...`
+                                : course.description
+                            : 'Sin descripción'}
+                    </Typography>
                 </Box>
             </CardContent>
         </Card>

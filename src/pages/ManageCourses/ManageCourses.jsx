@@ -33,7 +33,7 @@ const ManageCourses = (props) => {
 
     return (
         <>
-        <ManageCourseTabs onChange={(newTab) => setTab(newTab)} />
+        <ManageCourseTabs {...props} onChange={(newTab) => setTab(newTab)} />
         <CourseCardsMenu
         ownCourses={courses}
         tab={tab}
