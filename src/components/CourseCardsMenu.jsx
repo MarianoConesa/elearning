@@ -56,7 +56,7 @@ import FilterButtons from "./FilterButtons"
           </Grid>
         </Grid>
   
-        {!!open && <CreateCourseModal {...{ open, hndlCl, catData }} />}
+        {!!open && <CreateCourseModal {...{ open, hndlCl, catData, onUpdate, ...props }} />}
       </Grid>
     )
   }

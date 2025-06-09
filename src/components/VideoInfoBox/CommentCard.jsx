@@ -7,43 +7,52 @@ dayjs.locale("es")
 
 const CommentCard = ({ comment, currentUserId, onDelete }) => {
   const isOwner = currentUserId === comment.user?.id
-  const formattedDate = dayjs(comment.created_at).format("D [de] MMMM [de] YYYY, HH:mm")
+  const formattedDate = dayjs(comment.created_at).format("D [de] MMM [de] YYYY, HH:mm")
   const { isSmallScreen } = useThemeContext()
 
   return (
     <Box
       sx={{
-        border: "1px solid #ccc",
-        borderRadius: 2,
-        p: 2,
-        mb: 2,
-        backgroundColor: "#fafafa"
+        border: "1px solid #ddd",
+        borderRadius: 1,
+        p: 1.5,
+        mb: 1.5,
+        backgroundColor: "#f9f9f9"
       }}
     >
-      <Stack direction="row" spacing={2}>
-        <Avatar src={comment.user?.profilePic} />
+      <Stack direction="row" spacing={1.5}>
+        <Avatar
+          src={comment.user?.profilePic}
+          sx={{ width: isSmallScreen ? 28 : 32, height: isSmallScreen ? 28 : 32 }}
+        />
         <Box flex={1}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography fontWeight="bold">{comment.user?.username}</Typography>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="body2" fontWeight="bold">
+              {comment.user?.username}
+            </Typography>
             <Typography variant="caption" color="text.secondary">
               {formattedDate}
             </Typography>
           </Stack>
-          <Typography sx={{ mt: 0.5 }}>{comment.content}</Typography>
+
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5  }}>
+            {comment.content}
+          </Typography>
 
           {isOwner && (
-            <Box mt={2} display="flex" justifyContent="flex-start">
+            <Box mt={1}>
               <Button
                 onClick={() => onDelete(comment)}
                 variant="text"
                 sx={{
                   textTransform: "none",
                   color: theme => theme.palette.error.main,
-                  fontSize: isSmallScreen ? "0.50rem" : "0.85rem",
-                  pl: 0
+                  fontSize: "0.8rem",
+                  px: 0,
+                  minWidth: 0
                 }}
               >
-                Eliminar comentario
+                Eliminar
               </Button>
             </Box>
           )}

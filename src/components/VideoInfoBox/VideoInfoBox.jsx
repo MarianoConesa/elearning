@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react"
 import {
   Box,
   Button,
@@ -6,15 +5,16 @@ import {
   TextField,
   Avatar,
   CircularProgress,
-  Stack
+  Stack,
+  IconButton
 } from "@mui/material"
+import { useEffect, useState } from "react"
 import { dfltApiCall } from "../../hooks/api/useApiCall"
 import URL from "../../helpers/api_urls"
 import { useThemeContext } from "../../context/ThemeContext"
 import CommentCard from "./CommentCard"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
-import IconButton from "@mui/material/IconButton"
 
 const { GET_COMMENTS, CREATE_COMMENT, REMOVE_COMMENT } = URL
 
@@ -73,89 +73,105 @@ const VideoInfoBox = ({ course, userData }) => {
     if (activeTab === "comments") {
       fetchComments()
     }
-    setShowContent(true) // Al cambiar de tab, mostrar contenido por defecto
+    setShowContent(true)
   }, [activeTab, courseId])
 
   return (
     <Box
-      sx={{
-        border: "1px solid #ccc",
-        borderRadius: 2,
-        p: isSmallScreen ? 1 : 2,
-        mt: isSmallScreen ? 1 : 2,
-      }}
-    >
+    sx={{
+      border: "1px solid #ccc",
+      borderRadius: 2,
+      px: 2,
+      py: 1,
+      mt: 2,
+      maxHeight: "350px",
+      overflow: "hidden",
+      display: "flex",
+      flexDirection: "column",
+      maxWidth: "85dvw", 
+      width: "100%",     
+      margin: "0 auto"   
+    }}
+  >
       {/* Tabs + Mostrar/Ocultar */}
-      <Stack direction="row" spacing={1} mb={2} alignItems="center">
+      <Stack direction="row" spacing={1} alignItems="center" mb={1}>
         <Button
-          size={isSmallScreen ? "small" : "medium"}
+          size="small"
           variant={activeTab === "description" ? "contained" : "outlined"}
           onClick={() => setActiveTab("description")}
         >
           Descripción
         </Button>
         <Button
-          size={isSmallScreen ? "small" : "medium"}
+          size="small"
           variant={activeTab === "comments" ? "contained" : "outlined"}
           onClick={() => setActiveTab("comments")}
         >
           Comentarios
         </Button>
         <IconButton
-        onClick={() => setShowContent(prev => !prev)}
-        size="small"
-        title={showContent ? "Ocultar" : "Mostrar"}
-        aria-label={showContent ? "Ocultar contenido" : "Mostrar contenido"}
-        sx={{ ml: 1, color: theme => theme.palette.primary.main }}
+          onClick={() => setShowContent(prev => !prev)}
+          size="small"
+          title={showContent ? "Ocultar" : "Mostrar"}
+          sx={{ ml: 1, color: theme => theme.palette.primary.main }}
         >
-        {showContent ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          {showContent ? <VisibilityOffIcon /> : <VisibilityIcon />}
         </IconButton>
-
       </Stack>
 
-      {/* Descripción */}
-      {activeTab === "description" && showContent && (
-        <Typography fontSize={isSmallScreen ? "0.9rem" : "1rem"}>
-          {description || "Este curso no tiene descripción."}
-        </Typography>
-      )}
-
-      {/* Comentarios */}
-      {activeTab === "comments" && showContent && (
-        <Box>
-          {userData && (
-            <Stack direction="row" spacing={1} mb={2}>
-              <Avatar src={userData.profilePic} />
-              <TextField
-                fullWidth
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Escribe un comentario..."
-                multiline
-                minRows={2}
-                size={isSmallScreen ? "small" : "medium"}
-              />
-              <Button
-                variant="contained"
-                onClick={handlePostComment}
-                disabled={submitting}
-              >
-                Publicar
-              </Button>
-            </Stack>
+      {/* Contenido visible */}
+      {showContent && (
+        <Box sx={{ flex: 1, overflowY: "auto", pr: 1 }}>
+          {activeTab === "description" && (
+            <Typography
+              fontSize="0.9rem"
+              color="text.secondary"
+              sx={{ whiteSpace: "pre-line" }}
+            >
+              {description || "Este curso no tiene descripción."}
+            </Typography>
           )}
 
-          {loadingComments ? (
-            <CircularProgress />
-          ) : (
-            comments.map((comment) => (
-              <CommentCard
-                key={comment.id}
-                comment={comment}
-                currentUserId={userData?.id}
-                onDelete={handleDeleteComment}
-              />
-            ))
+          {activeTab === "comments" && (
+            <Box>
+              {userData && (
+                <Stack direction="row" spacing={1} mb={2}>
+                  <Avatar src={userData.profilePic} sx={{ width: 30, height: 30 }} />
+                  <TextField
+                    fullWidth
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Escribe un comentario..."
+                    multiline
+                    minRows={2}
+                    size="small"
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={handlePostComment}
+                    disabled={submitting}
+                    size="small"
+                  >
+                    Publicar
+                  </Button>
+                </Stack>
+              )}
+
+              {loadingComments ? (
+                <CircularProgress size={20} />
+              ) : (
+                <Box display="flex" flexDirection="column" gap={1}>
+                  {comments.map(comment => (
+                    <CommentCard
+                      key={comment.id}
+                      comment={comment}
+                      currentUserId={userData?.id}
+                      onDelete={handleDeleteComment}
+                    />
+                  ))}
+                </Box>
+              )}
+            </Box>
           )}
         </Box>
       )}

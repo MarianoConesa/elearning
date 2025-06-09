@@ -20,7 +20,7 @@ const ScreenCourse = (props) => {
         updateCourse()
     }, [id])
 
-    return <Course {...props} {...{ id, course, courseLoader }} />
+    return <Course {...props} {...{ id, course, courseLoader, updateCourse }} />
 }
 
 export default ScreenCourse

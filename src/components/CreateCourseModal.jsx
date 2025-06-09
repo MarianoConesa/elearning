@@ -7,42 +7,72 @@ import { ModalBox } from "../StyledComponents"
 import { dfltApiCall } from '../hooks/api/useApiCall'
 import URL from '../helpers/api_urls'
 
-const { CREATE_COURSE } = URL
+const { CREATE_COURSE, UPDATE_COURSE } = URL
 
-const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
-    const [formData, setFormData] = useState({
-        title: "",
-        description: "",
+const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCourse = null, updateCourse = null }) => {
+    const initialFormState = {
+        title: existingCourse ? existingCourse.title : "",
+        description: existingCourse ? existingCourse.description : "",
         miniature: null,
-        video: [], // array de { file, indice }
+        video: [],
         isPrivate: false,
         password: "",
-        catArr: []
-    })
-    const [auxCatArr, setAuxCatArr] = useState([])
-    const [auxFiles, setAuxFiles] = useState({ miniature: null, video: [] })
+        catArr: existingCourse ? existingCourse.categories : []
+    }
+
+    const initialAuxCatArr = existingCourse
+        ? catData?.allLevel
+            .filter(cat => existingCourse.categories.some(c => c.id === cat.id))
+            .map(cat => cat.name)
+        : []
+
+    const initialAuxFiles = {
+        miniature: existingCourse ? existingCourse.miniature : null,
+        video: []
+    }
+
+    const [formData, setFormData] = useState(initialFormState)
+    const [auxCatArr, setAuxCatArr] = useState(initialAuxCatArr)
+    const [auxFiles, setAuxFiles] = useState(initialAuxFiles)
+    const [oldVideos, setOldVideos] = useState(existingCourse ? [...existingCourse.videos] : [])
 
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-    const isFormValid = formData.title && formData.catArr.length > 0 && (!formData.isPrivate || formData.password)
+    const isFormValid =
+    formData.title &&
+    formData.catArr?.length > 0 &&
+    (formData.video.length > 0 || oldVideos.length > 0) &&
+    formData.video.every(v => v.indice?.trim()) &&
+    oldVideos.every(v => v.title?.trim()) &&
+    (!formData.isPrivate || formData.password)
+
+    const resetForm = () => {
+        setFormData(initialFormState)
+        setAuxCatArr(initialAuxCatArr)
+        setAuxFiles(initialAuxFiles)
+        setOldVideos(existingCourse ? [...existingCourse.videos] : [])
+    }
+
+    const handleClose = () => {
+        resetForm()
+        hndlCl()
+    }
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target
-        setFormData(prevState => ({
-            ...prevState,
+        setFormData(prev => ({
+            ...prev,
             [name]: type === "checkbox" ? checked : value
         }))
     }
 
     const handleCategoryChange = (event, newValue) => {
         setAuxCatArr(newValue)
-
         const selectedIds = catData.allLevel
             .filter(cat => newValue.includes(cat.name))
             .map(cat => cat.id)
-
-        setFormData(prevState => ({
-            ...prevState,
+        setFormData(prev => ({
+            ...prev,
             catArr: selectedIds
         }))
     }
@@ -52,15 +82,12 @@ const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
 
         if (name === "video") {
             const filesArr = Array.from(files)
-
-            setFormData(prevState => ({
-                ...prevState,
-                video: [...prevState.video, ...filesArr.map(file => ({ file, indice: "" }))]
+            setFormData(prev => ({
+                ...prev,
+                video: [...prev.video, ...filesArr.map(file => ({ file, indice: "" }))]
             }))
-
             const previews = []
             let loadedCount = 0
-
             filesArr.forEach((file) => {
                 const reader = new FileReader()
                 reader.onload = (e) => {
@@ -86,7 +113,6 @@ const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
             } else {
                 setAuxFiles(prev => ({ ...prev, [name]: null }))
             }
-
             setFormData(prev => ({ ...prev, [name]: file }))
         }
     }
@@ -106,7 +132,6 @@ const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
             setAuxFiles(prev => ({ ...prev, [field]: null }))
         }
     }
-    
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -129,18 +154,32 @@ const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
         dataToSend.append("password", formData.password)
         formData.catArr.forEach(id => dataToSend.append("catArr[]", id))
 
-        dfltApiCall('POST', CREATE_COURSE, dataToSend)
-        hndlCl()
+        if (existingCourse) {
+            oldVideos.forEach((vid) => {
+                dataToSend.append("old_videos[]", JSON.stringify({ id: vid.id, title: vid.title }))
+            })
+            dfltApiCall('POST', `${UPDATE_COURSE}/${existingCourse.id}`, dataToSend)
+                .then(() => {
+                    updateCourse()
+                    handleClose()
+                })
+            } else {
+                dfltApiCall('POST', CREATE_COURSE, dataToSend)
+                    .then(() => {
+                        onUpdate()
+                        handleClose()
+                    })
+            }
     }
 
     return (
-        <Modal open={open} onClose={hndlCl}>
+        <Modal open={open} onClose={handleClose}>
             <ModalBox sx={{ padding: `20px`, maxHeight: "90vh", overflowY: "auto", width: isMobile ? '90%' : '50%' }}>
-                <Typography variant={isMobile ? "h6" : "h5"} gutterBottom>Crear Curso</Typography>
+                <Typography variant={isMobile ? "h6" : "h5"} gutterBottom>{existingCourse ? "Editar Curso" : "Crear Curso"}</Typography>
                 <Box component="form" onSubmit={handleSubmit}>
                     <TextField fullWidth label="Título" name="title" value={formData.title} onChange={handleChange} margin="normal" required />
                     <TextField fullWidth label="Descripción" name="description" value={formData.description} onChange={handleChange} margin="normal" multiline rows={4} />
-                    <Autocomplete multiple options={catData.allLevel.map(cat => cat.name)} value={auxCatArr} onChange={handleCategoryChange} renderInput={(params) => <TextField {...params} label="Categorías" margin="normal" />} />
+                    <Autocomplete multiple options={catData?.allLevel.map(cat => cat.name)} value={auxCatArr} onChange={handleCategoryChange} renderInput={(params) => <TextField {...params} label="Categorías" margin="normal" />} />
 
                     <Box display="flex" flexDirection={isMobile ? "column" : "row"} alignItems="center" gap={2} mt={2}>
                         <Button variant="contained" component="label" fullWidth>Subir Miniatura<input type="file" hidden name="miniature" onChange={handleFileChange} /></Button>
@@ -151,6 +190,29 @@ const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
                     <Box display="flex" flexDirection={isMobile ? "column" : "row"} alignItems="center" gap={2} mt={2}>
                         <Button variant="contained" component="label" fullWidth>Subir Video<input type="file" hidden name="video" multiple onChange={handleFileChange} /></Button>
                     </Box>
+
+                    {oldVideos.map((vid, index) => (
+                        <Box key={vid.id} mt={1}>
+                            <TextField
+                                fullWidth
+                                label="Índice del video"
+                                value={vid.title}
+                                onChange={(e) => {
+                                    const updatedOldVideos = [...oldVideos]
+                                    updatedOldVideos[index].title = e.target.value
+                                    setOldVideos(updatedOldVideos)
+                                }}
+                                sx={{ mt: 1, paddingBottom: '15px' }}
+                            />
+                            <video controls src={vid.file} style={{ width: "100%" }} />
+                            <IconButton onClick={() => {
+                                setOldVideos(prev => prev.filter((_, i) => i !== index))
+                            }}>
+                                <Delete color="error" />
+                            </IconButton>
+                        </Box>
+                    ))}
+
                     {auxFiles.video?.length > 0 && auxFiles.video.map((src, index) => (
                         <Box key={index} mt={1}>
                             <TextField
@@ -173,7 +235,9 @@ const CreateCourseModal = ({ open, hndlCl, catData, update }) => {
 
                     {formData.isPrivate && <TextField fullWidth label="Contraseña" name="password" type="password" value={formData.password} onChange={handleChange} margin="normal" required />}
 
-                    <Button type="submit" variant="contained" fullWidth disabled={!isFormValid} sx={{ mt: 3, bgcolor: theme.palette.secondary.main, color: "white", fontWeight: "bold", "&:hover": { bgcolor: theme.palette.secondary.dark } }}>Crear Curso</Button>
+                    <Button type="submit" variant="contained" fullWidth disabled={!isFormValid} sx={{ mt: 3, bgcolor: theme.palette.secondary.main, color: "white", fontWeight: "bold", "&:hover": { bgcolor: theme.palette.secondary.dark } }}>
+                        {existingCourse ? 'Actualizar curso' : 'Crear Curso'}
+                    </Button>
                 </Box>
             </ModalBox>
         </Modal>

@@ -2,7 +2,7 @@ import { Avatar, Box, Button, CircularProgress, Grid, Icon, IconButton, Menu, Me
 import SendIcon from '@mui/icons-material/Send'
 import useModal from "../../hooks/modals/useModal"
 import LoginModal from "../loginModals/LoginModal"
-import { DarkMode, LightMode, Person, Search } from "@mui/icons-material"
+import { Cancel, DarkMode, LightMode, Person, Search } from "@mui/icons-material"
 import { useState } from "react"
 import { useThemeContext } from "../../context/ThemeContext"
 import { dfltApiCall } from "../../hooks/api/useApiCall"
@@ -14,6 +14,7 @@ const { LOGOUT } = URL
 const Header = ({ initData, loader, userData, userLoader, update, handleSearch }) => {
     const svgImg = initData && initData[0]
     const [searchText, setSearchText] = useState("")
+    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
     const { open: openLogin, handleOpen: hndlOpLogin, handleClose: hndlClLogin } = useModal()
     const [type, setType] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -47,7 +48,6 @@ const Header = ({ initData, loader, userData, userLoader, update, handleSearch }
     }
 
     const handleSearchSubmit = () => {
-        //console.log("Buscar:", searchText)  // Aquí puedes poner tu lógica
         handleSearch(searchText)
         setSearchText("")
         navigate(home)
@@ -67,14 +67,39 @@ const Header = ({ initData, loader, userData, userLoader, update, handleSearch }
                 backgroundColor: colors.primary.main
             }}>
                 {/* Logo y título */}
-                <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: isMobile ? '10px' : '0', cursor: "pointer" }} onClick={()=>{navigate(home); update()}}>
-                    {!loader && svgImg ? (
-                        <Icon sx={{ height: `8vh`, width: `8vh`, paddingRight: '5px' }}>
-                            <img style={{ height: '100%', width: '100%' }} src={svgImg} alt="Logo" />
-                        </Icon>
-                    ) : <CircularProgress sx={{ padding: `10px`, color: colors.logoWhite }}/>}
-                    <Typography variant={isMobile ? 'h4' : 'h3'} fontFamily="serif" sx={{ color: colors.logoWhite }}>Elearning</Typography>
+                <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: isMobile ? '10px' : '0',
+                    cursor: "pointer"
+                }}
+                onClick={() => { navigate(home); update() }}
+                >
+                {!loader && svgImg ? (
+                    <Icon sx={{ height: `8vh`, width: `8vh`, paddingRight: '5px' }}>
+                    <img style={{ height: '100%', width: '100%' }} src={svgImg} alt="Logo" />
+                    </Icon>
+                ) : (
+                    <CircularProgress sx={{ padding: `10px`, color: colors.logoWhite }} />
+                )}
+
+                <Typography
+                    variant={isMobile ? 'h4' : 'h3'}
+                    fontFamily="serif"
+                    sx={{ color: colors.logoWhite, mr: 1 }}
+                >
+                    Elearning
+                </Typography>
+
+                {/* Icono de búsqueda en móvil */}
+                {isMobile && !isMobileSearchOpen && (
+                <IconButton onClick={() => setIsMobileSearchOpen(true)}>
+                    <Search sx={{ color: colors.logoWhite }} />
+                </IconButton>
+                )}
                 </Box>
+
 
                 {/* Barra de búsqueda */}
                 {!isMobile && (
@@ -135,6 +160,49 @@ const Header = ({ initData, loader, userData, userLoader, update, handleSearch }
                 </Box>
                 {!!openLogin && <LoginModal {...{ openLogin, hndlClLogin, type, update }} />}
             </Grid>
+            {isMobile && isMobileSearchOpen && (
+            <Box
+                sx={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '5px',
+                backgroundColor: colors.background.paper,
+                boxShadow: theme.shadows[4],
+                zIndex: 10
+                }}
+            >
+                <TextField
+                fullWidth
+                autoFocus
+                variant="standard"
+                placeholder="Buscar cursos..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                    handleSearchSubmit()
+                    setIsMobileSearchOpen(false)
+                    }
+                }}
+                InputProps={{
+                    disableUnderline: true,
+                    sx: { fontSize: '1rem', color: colors.text.primary, ml: 1 },
+                }}
+                />
+                <IconButton
+                onClick={() => {
+                    handleSearchSubmit()
+                    setIsMobileSearchOpen(false)
+                }}
+                >
+                <SendIcon sx={{ color: colors.text.secondary }} />
+                </IconButton>
+                <IconButton onClick={() => setIsMobileSearchOpen(false)}>
+                    <Cancel/>
+                </IconButton>
+            </Box>
+            )}
         </Grid>
     )
 }
