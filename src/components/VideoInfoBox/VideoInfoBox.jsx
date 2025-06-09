@@ -6,7 +6,8 @@ import {
   Avatar,
   CircularProgress,
   Stack,
-  IconButton
+  IconButton,
+  Collapse
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import { dfltApiCall } from "../../hooks/api/useApiCall"
@@ -78,21 +79,19 @@ const VideoInfoBox = ({ course, userData }) => {
 
   return (
     <Box
-    sx={{
-      border: "1px solid #ccc",
-      borderRadius: 2,
-      px: 2,
-      py: 1,
-      mt: 2,
-      maxHeight: "350px",
-      overflow: "hidden",
-      display: "flex",
-      flexDirection: "column",
-      maxWidth: "85dvw", 
-      width: "100%",     
-      margin: "0 auto"   
-    }}
-  >
+      sx={{
+        border: "1px solid #ccc",
+        borderRadius: 2,
+        px: 2,
+        py: 1,
+        mt: 2,
+        width: "100%",
+        maxWidth: "85dvw",
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "column"
+      }}
+    >
       {/* Tabs + Mostrar/Ocultar */}
       <Stack direction="row" spacing={1} alignItems="center" mb={1}>
         <Button
@@ -119,62 +118,60 @@ const VideoInfoBox = ({ course, userData }) => {
         </IconButton>
       </Stack>
 
-      {/* Contenido visible */}
-      {showContent && (
-        <Box sx={{ flex: 1, overflowY: "auto", pr: 1 }}>
-          {activeTab === "description" && (
-            <Typography
-              fontSize="0.9rem"
-              color="text.secondary"
-              sx={{ whiteSpace: "pre-line" }}
-            >
-              {description || "Este curso no tiene descripción."}
-            </Typography>
-          )}
+      {/* Contenido con animación */}
+      <Collapse in={showContent}>
+        {activeTab === "description" && (
+          <Typography
+            fontSize="0.9rem"
+            color="text.secondary"
+            sx={{ whiteSpace: "pre-line" }}
+          >
+            {description || "Este curso no tiene descripción."}
+          </Typography>
+        )}
 
-          {activeTab === "comments" && (
-            <Box>
-              {userData && (
-                <Stack direction="row" spacing={1} mb={2}>
-                  <Avatar src={userData.profilePic} sx={{ width: 30, height: 30 }} />
-                  <TextField
-                    fullWidth
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Escribe un comentario..."
-                    multiline
-                    minRows={2}
-                    size="small"
+        {activeTab === "comments" && (
+          <Box mt={1}>
+            {userData && (
+              <Stack direction="row" spacing={1} mb={2}>
+                <Avatar src={userData.profilePic} sx={{ width: 30, height: 30 }} />
+                <TextField
+                  fullWidth
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Escribe un comentario..."
+                  multiline
+                  minRows={2}
+                  size="small"
+                />
+                <Button
+                  variant="contained"
+                  onClick={handlePostComment}
+                  disabled={submitting}
+                  size="small"
+                >
+                  Publicar
+                </Button>
+              </Stack>
+            )}
+
+            {loadingComments ? (
+              <CircularProgress size={20} />
+            ) : (
+              <Box display="flex" flexDirection="column" gap={1}>
+                {comments.map(comment => (
+                  <CommentCard
+                    key={comment.id}
+                    comment={comment}
+                    currentUserId={userData?.id}
+                    onDelete={handleDeleteComment}
                   />
-                  <Button
-                    variant="contained"
-                    onClick={handlePostComment}
-                    disabled={submitting}
-                    size="small"
-                  >
-                    Publicar
-                  </Button>
-                </Stack>
-              )}
-
-              {loadingComments ? (
-                <CircularProgress size={20} />
-              ) : (
-                <Box display="flex" flexDirection="column" gap={1}>
-                  {comments.map(comment => (
-                    <CommentCard
-                      key={comment.id}
-                      comment={comment}
-                      currentUserId={userData?.id}
-                      onDelete={handleDeleteComment}
-                    />
-                  ))}
-                </Box>
-              )}
-            </Box>
-          )}
-        </Box>
-      )}
+                ))}
+              </Box>
+            )}
+          </Box>
+        )}
+      </Collapse>
     </Box>
   )
 }

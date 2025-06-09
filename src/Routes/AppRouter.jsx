@@ -11,6 +11,7 @@ import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
 import { Box, Grid } from "@mui/material"
 import ScreenForeignProfile from "../Screens/Profile/ScreenForeignProfile"
+import EmailVerified from "../pages/EmailVerified"
 
 const { GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES, GET_ALL_COURSES, SEARCH_COURSES } = URL
 
@@ -61,6 +62,7 @@ const AppRouter = () => {
                         <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{ initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, updateUserData, updateCourses }} />} />
                         <Route path={import.meta.env.VITE_APP_USER_PROFILE} element={<ScreenProfile {...{ initData, userData, loader, userLoader, update, updateUserData }} />} />
                         <Route path={`${import.meta.env.VITE_APP_FOREIGN_PROFILE}:id`} element={<ScreenForeignProfile {...{ initData, userData, loader, userLoader, update, updateUserData, catData ,filterCat, setFilterCat }} />} />
+                        <Route path={import.meta.env.VITE_APP_EMAIL_VERIFIED} element={<EmailVerified/>} />
                     </Routes>
                 </Grid>
 
