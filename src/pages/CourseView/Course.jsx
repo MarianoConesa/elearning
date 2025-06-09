@@ -9,6 +9,7 @@ import { dfltApiCall } from "../../hooks/api/useApiCall"
 import URL from "../../helpers/api_urls"
 import VideoInfoBox from "../../components/VideoInfoBox/VideoInfoBox"
 import CreateCourseModal from "../../components/CreateCourseModal"
+import { useNavigate } from "react-router-dom"
 
 const { FOLLOW, UNFOLLOW, COMPLETE, LIKE, DISLIKE } = URL
 
@@ -25,6 +26,8 @@ const Course = ({ id, course, courseLoader, userData, update, updateUserData, up
     const videos = course?.videos || []
     const [activeVideoIndex, setActiveVideoIndex] = useState(0)
     const [editModalOpen, setEditModalOpen] = useState(false)
+
+    const navigate = useNavigate()
     
     useEffect(() => {
         if (userData) {
@@ -105,7 +108,11 @@ const Course = ({ id, course, courseLoader, userData, update, updateUserData, up
                         </Button>
                     )}
                     <Box display="flex" alignItems="center" gap={2} mt={1}>
-                        <Avatar src={course.user.profilePic} alt={course.user.name} />
+                        <Avatar src={course.user.profilePic} alt={course.user.name}  sx={{cursor: 'pointer'}} 
+                        onClick={(event) => {
+                                    event.stopPropagation() // Evita que el Card capture el click
+                                    navigate(`${import.meta.env.VITE_APP_FOREIGN_PROFILE}${course.user.id}`)
+                        }}></Avatar>
                         <Typography variant="body1" fontWeight="medium" color="text.primary">
                             {course.user.name}
                         </Typography>
