@@ -10,8 +10,9 @@ import URL from '../helpers/api_urls'
 import Header from "../components/Header/Header"
 import Footer from "../components/Footer/Footer"
 import { Box, Grid } from "@mui/material"
+import ScreenForeignProfile from "../Screens/Profile/ScreenForeignProfile"
 
-const { GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES, GET_ALL_COURSES } = URL
+const { GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES, GET_ALL_COURSES, SEARCH_COURSES } = URL
 
 const AppRouter = () => {
     const [initData, setInitData] = useState()
@@ -44,10 +45,14 @@ const AppRouter = () => {
         update()
     }, [])
 
+    const handleSearch = (string) => {
+        dfltApiCall('POST', SEARCH_COURSES, string, setCourseData, setCoursesLoader)        
+    }
+
     return (
         <BrowserRouter>
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh' }}>
-                <Header {...{ initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update }} />
+                <Header {...{ initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, handleSearch }} />
                 
                 <Grid item container sx={{ flexGrow: 1, overflowY: 'auto' }}>
                     <Routes>
@@ -55,6 +60,7 @@ const AppRouter = () => {
                         <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{ initData, userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update }} />} />
                         <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{ initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, updateUserData, updateCourses }} />} />
                         <Route path={import.meta.env.VITE_APP_USER_PROFILE} element={<ScreenProfile {...{ initData, userData, loader, userLoader, update, updateUserData }} />} />
+                        <Route path={`${import.meta.env.VITE_APP_FOREIGN_PROFILE}:id`} element={<ScreenForeignProfile {...{ initData, userData, loader, userLoader, update, updateUserData, catData ,filterCat, setFilterCat }} />} />
                     </Routes>
                 </Grid>
 

@@ -27,7 +27,7 @@ const dfltApiCall = async (method, addUrl, body, setState, setLoader) => {
       Cookies.set('token', response.data.token, { expires: 7, sameSite: 'Lax', secure: false });
     }
 
-    const data = response.data.message;
+    const data = response.data.message ?? response.data.data;
     setState && setState(data);
     setLoader && setLoader(false);
     return data;

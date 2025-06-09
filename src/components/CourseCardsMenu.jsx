@@ -48,7 +48,7 @@ import FilterButtons from "./FilterButtons"
             {tab === 'owned' && <AddCourseBtn {...{hndlOpn, colors, isMobile, theme}}/>}
   
             {/* Tarjetas de cursos */}
-            {courses && courses.courses?.filter((course) => (filterCat.length === 0 || course.categories.some(catId => filterCat.includes(catId)))).map((course) => (
+            {courses && courses.courses?.length > 0 && courses.courses?.filter((course) => (filterCat.length === 0 || course.categories.some(catId => filterCat.includes(catId)))).map((course) => (
               <Grid item key={course.id}>
                 <CourseCard course={course} />
               </Grid>
@@ -56,7 +56,7 @@ import FilterButtons from "./FilterButtons"
           </Grid>
         </Grid>
   
-        {!!open && <CreateCourseModal {...{ open, hndlCl, catData }} />}
+        {!!open && <CreateCourseModal {...{ open, hndlCl, catData, onUpdate, ...props }} />}
       </Grid>
     )
   }

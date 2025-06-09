@@ -7,13 +7,14 @@ const TABS = [
     { key: 'owned', label: 'Propios',  color: 'secondary.main' },
 ]
 
-const ManageCourseTabs = ({ onChange }) => {
+const ManageCourseTabs = ({ onChange, updateUserData }) => {
     const [selected, setSelected] = useState('followed')
     const theme = useTheme()
 
     const handleTabClick = (key) => {
         setSelected(key)
         if (onChange) onChange(key)
+          updateUserData()
     }
 
     return (
