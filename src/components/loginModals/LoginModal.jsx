@@ -1,47 +1,58 @@
-import { Person } from "@mui/icons-material"
-import { Alert, Box, Button, CircularProgress, Modal, TextField, Typography, useTheme } from "@mui/material"
-import Avatar from '@mui/material/Avatar'
-import { useState } from "react"
-import { ModalBox } from "../../StyledComponents"
-import URL from "../../helpers/api_urls"
-import { dfltApiCall } from "../../hooks/api/useApiCall"
-import ProfileImageUploader from "../ProfileImageUploader"
+import { Person } from "@mui/icons-material";
+import { Alert, Box, Button, CircularProgress, Modal, TextField, Typography, useTheme } from "@mui/material";
+import Avatar from '@mui/material/Avatar';
+import { useState } from "react";
+import { ModalBox } from "../../StyledComponents";
+import URL from "../../helpers/api_urls";
+import { dfltApiCall } from "../../hooks/api/useApiCall";
+import ProfileImageUploader from "../ProfileImageUploader";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { IconButton, InputAdornment } from "@mui/material";
+import GoogleIcon from '@mui/icons-material/Google';
 
-const { LOGIN, REGISTER, FORGOT_PASSWORD } = URL
+const { LOGIN, REGISTER, FORGOT_PASSWORD } = URL;
 
 const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
-    const [userData, setUserData] = useState()
-    const [loginLoader, setLoginLoader] = useState(false)
-    const [errors, setErrors] = useState({})
-    const [image, setImage] = useState()
-    const [verificationSent, setVerificationSent] = useState(false)
+    const [userData, setUserData] = useState();
+    const [loginLoader, setLoginLoader] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [image, setImage] = useState();
+    const [verificationSent, setVerificationSent] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         name: '',
         userName: '',
         repeatPassword: ''
-    })
+    });
+    const [showPasswords, setShowPasswords] = useState({
+        password: false,
+        repeatPassword: false
+    });
 
-    const theme = useTheme()
-    const colors = { ...theme.palette }
+    const theme = useTheme();
+    const colors = { ...theme.palette };
 
     const handleChange = (event) => {
-        const { name, value } = event.target
-        setFormData(prevState => ({ ...prevState, [name]: value }))
-    }
+        const { name, value } = event.target;
+        setFormData(prevState => ({ ...prevState, [name]: value }));
+    };
 
     const isFormValid = () => {
         if (type === 'login') {
-            return formData.email && formData.password
+            return formData.email && formData.password;
         }
         return formData.email &&
-               formData.password.length >= 6 &&
-               formData.name &&
-               formData.userName &&
-               formData.repeatPassword &&
-               formData.password === formData.repeatPassword
-    }
+            formData.password.length >= 6 &&
+            formData.name &&
+            formData.userName &&
+            formData.repeatPassword &&
+            formData.password === formData.repeatPassword;
+    };
+
+    const handlePasswordToggle = (field) => () => {
+        setShowPasswords(prev => ({ ...prev, [field]: !prev[field] }));
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -61,7 +72,7 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
         }
 
         setErrors({});
-        setVerificationSent(false)
+        setVerificationSent(false);
         const body = { email: formData.email, password: formData.password };
         const registerBody = new FormData();
         const url = type === 'login' ? LOGIN : REGISTER;
@@ -83,9 +94,14 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
             if (response?.errors) {
                 const fieldErrors = {};
                 Object.entries(response.errors).forEach(([field, messages]) => {
-                    fieldErrors[field] = messages[0];
+                    fieldErrors[field] = messages.join(' ');
                 });
                 setErrors(fieldErrors);
+                return;
+            }
+
+            if (response?.message && !response?.token) {
+                setErrors({ message: response.message });
                 return;
             }
 
@@ -113,30 +129,29 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
         } finally {
             setLoginLoader(false);
         }
-    }
+    };
 
     const handleForgotPassword = async () => {
         if (!formData.email) {
-            setErrors({ userNotFound: 'Introduce tu email para recuperar la contraseña' })
-            return
+            setErrors({ userNotFound: 'Introduce tu email para recuperar la contraseña' });
+            return;
         }
 
         try {
-            setLoginLoader(true)
-            const body = { email: formData.email }
-
-            const response = await dfltApiCall("POST", FORGOT_PASSWORD, body)
+            setLoginLoader(true);
+            const body = { email: formData.email };
+            const response = await dfltApiCall("POST", FORGOT_PASSWORD, body);
 
             if (response) {
-                alert("Se ha enviado un correo con instrucciones para recuperar tu contraseña.")
+                alert("Se ha enviado un correo con instrucciones para recuperar tu contraseña.");
             }
         } catch (error) {
-            console.error("Error al enviar email de recuperación:", error)
-            alert("No se pudo enviar el correo de recuperación. Inténtalo más tarde.")
+            console.error("Error al enviar email de recuperación:", error);
+            alert("No se pudo enviar el correo de recuperación. Inténtalo más tarde.");
         } finally {
-            setLoginLoader(false)
+            setLoginLoader(false);
         }
-    }
+    };
 
     return (
         <Modal open={openLogin} onClose={hndlClLogin}>
@@ -157,9 +172,16 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                 </Box>
 
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
                     {verificationSent && (
                         <Alert severity="info" sx={{ mb: 2 }}>
                             Registro exitoso. Revisa tu correo para verificar tu cuenta.
+                        </Alert>
+                    )}
+
+                    {(errors?.server || errors?.message) && (
+                        <Alert severity="error" sx={{ mb: 2 }}>
+                            {errors.server || errors.message}
                         </Alert>
                     )}
 
@@ -219,7 +241,7 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                         fullWidth
                         name="password"
                         label="Contraseña"
-                        type="password"
+                        type={showPasswords.password ? "text" : "password"}
                         id="password"
                         autoComplete="current-password"
                         value={formData.password}
@@ -227,6 +249,15 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                         error={!!errors.password}
                         helperText={errors.password ?? (type === 'register' ? 'Mínimo 6 caracteres' : '')}
                         disabled={verificationSent}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={handlePasswordToggle("password")} edge="end">
+                                        {showPasswords.password ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                     />
 
                     {type === 'register' && (
@@ -236,7 +267,7 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                             fullWidth
                             name="repeatPassword"
                             label="Repetir Contraseña"
-                            type="password"
+                            type={showPasswords.repeatPassword ? "text" : "password"}
                             id="repeatPassword"
                             autoComplete="new-password"
                             value={formData.repeatPassword}
@@ -244,18 +275,46 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                             error={!!errors.repeatPass}
                             helperText={errors.repeatPass}
                             disabled={verificationSent}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handlePasswordToggle("repeatPassword")} edge="end">
+                                            {showPasswords.repeatPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                         />
                     )}
 
-                    {(errors?.userNotFound || errors?.server) && (
+                    {(errors?.userNotFound) && (
                         <Typography color="error" sx={{ mt: 1 }}>
-                            {errors.userNotFound || errors.server}
+                            {errors.userNotFound}
                         </Typography>
                     )}
 
-                    <a href={`${import.meta.env.VITE_APP_API}/auth/google/redirect`}>
-                        Iniciar sesión con Google
-                    </a>
+                    <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                        <Button
+                            variant="outlined"
+                            size="small"
+                            startIcon={<GoogleIcon />}
+                            href={`${import.meta.env.VITE_APP_API_GOOGLE}/auth/google/redirect`}
+                            sx={{
+                                textTransform: "none",
+                                borderRadius: 5,
+                                px: 2,
+                                backgroundColor: "#fff",
+                                color: "#000",
+                                borderColor: "#ccc",
+                                "&:hover": {
+                                    backgroundColor: "#f7f7f7",
+                                    borderColor: "#bbb",
+                                },
+                            }}
+                        >
+                            {`Iniciar sesión con Google`}
+                        </Button>
+                    </Box>
 
                     {type === 'login' && (
                         <Button
@@ -289,7 +348,7 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                 </Box>
             </ModalBox>
         </Modal>
-    )
-}
+    );
+};
 
-export default LoginModal
+export default LoginModal;
