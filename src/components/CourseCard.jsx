@@ -20,7 +20,6 @@ const CourseCard = ({ course }) => {
             display: "flex", 
             flexDirection: "column", 
             justifyContent: "flex-start", 
-            //cursor: "pointer", 
             transition: "0.3s",
             '&:hover': { boxShadow: theme.shadows[6] }
         }}
@@ -38,7 +37,7 @@ const CourseCard = ({ course }) => {
             <CardContent sx={{ display: "flex", alignItems: "flex-start", gap: 2, width: "100%" }}>
                 <Avatar src={course.user?.profilePic} alt={course.user?.name} sx={{cursor: 'pointer'}} 
                 onClick={(event) => {
-                            event.stopPropagation() // Evita que el Card capture el click
+                            event.stopPropagation()
                             navigate(`${import.meta.env.VITE_APP_FOREIGN_PROFILE}${course.user.id}`)
                         }}></Avatar>
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%" }}>

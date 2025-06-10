@@ -10,7 +10,7 @@ import {
   import CourseCardsMenu from "../../components/CourseCardsMenu"
   import { useThemeContext } from "../../context/ThemeContext"
   
-  const ForeignProfile = ({ user, courses, loading, catData, onUpdate, filterCat, setFilterCat }) => {
+  const ForeignProfile = ({ user, courses, loading, catData, filterCat, setFilterCat, url, fetchCourses, setCourses }) => {
     const { isSmallScreen } = useThemeContext()
   
     if (loading || !user)
@@ -56,13 +56,15 @@ import {
             Cursos de {user.name}
           </Typography>
   
-          {courses.courses?.length > 0 ? (
+          {courses?.length > 0 ? (
             <CourseCardsMenu
-              courseData={courses}
+              courses={courses}
+              setCourses={setCourses}
+              url={url}
               catData={catData}
               filterCat={filterCat}
               setFilterCat={setFilterCat}
-              onUpdate={onUpdate}
+              fetchCourses={fetchCourses}
             />
           ) : (
             <Typography align="center" color="text.secondary">

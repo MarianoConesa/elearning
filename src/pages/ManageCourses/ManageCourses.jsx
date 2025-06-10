@@ -7,7 +7,7 @@ import ManageCourseTabs from "../../components/ManageCourseTabs"
 
 const { GET_OWNED_COURSES, GET_FOLLOWED_COURSES, GET_COMPLETED_COURSES } = URL
 
-const ManageCourses = (props) => {
+const ManageCourses = ({ fetchCourses, ...props }) => {
     const theme = useTheme()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -16,29 +16,33 @@ const ManageCourses = (props) => {
     const [courses, setCourses] = useState([])
     const [coursesLoader, setCoursesLoader] = useState()
 
-    const updateCourses = (type = tab) => {
-        const urlMap = {
-            owned: GET_OWNED_COURSES,
-            followed: GET_FOLLOWED_COURSES,
-            completed: GET_COMPLETED_COURSES,
-        }
-
-        dfltApiCall('GET', urlMap[type], null, setCourses, setCoursesLoader)
+    const urlMap = {
+        owned: GET_OWNED_COURSES,
+        followed: GET_FOLLOWED_COURSES,
+        completed: GET_COMPLETED_COURSES,
+    }
+    
+    const updateTabs = () => {
+        fetchCourses(setCourses, 1 , 30, urlMap[tab])
     }
 
     useEffect(() => {
-        updateCourses(tab)
+        setCourses([])
+        updateTabs()
     }, [tab])
+
 
 
     return (
         <>
         <ManageCourseTabs {...props} onChange={(newTab) => setTab(newTab)} />
         <CourseCardsMenu
-        ownCourses={courses}
+        courses={courses}
+        setCourses={setCourses}
+        url={urlMap[tab]}
         tab={tab}
         loading={coursesLoader}
-        onUpdate={updateCourses}
+        fetchCourses={fetchCourses}
         {...props}
     />
     </>

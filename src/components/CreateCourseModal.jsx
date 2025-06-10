@@ -9,7 +9,7 @@ import URL from '../helpers/api_urls'
 
 const { CREATE_COURSE, UPDATE_COURSE } = URL
 
-const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCourse = null, updateCourse = null }) => {
+const CreateCourseModal = ({ open, hndlCl, catData, update, existingCourse = null, updateCourse = null }) => {
     const initialFormState = {
         title: existingCourse ? existingCourse.title : "",
         description: existingCourse ? existingCourse.description : "",
@@ -166,7 +166,6 @@ const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCo
             } else {
                 dfltApiCall('POST', CREATE_COURSE, dataToSend)
                     .then(() => {
-                        onUpdate()
                         handleClose()
                     })
             }

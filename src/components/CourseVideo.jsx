@@ -1,13 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react'
-import ReactPlayer from 'react-player'
 import {
     Box,
-    List,
-    ListItem,
-    ListItemText,
-    Typography,
     useTheme,
 } from '@mui/material'
+import React, { useRef, useState } from 'react'
+import ReactPlayer from 'react-player'
 
 const CourseVideo = ({ url, markers = [] }) => {
     const playerRef = useRef(null)
@@ -18,19 +14,6 @@ const CourseVideo = ({ url, markers = [] }) => {
     const handleProgress = (state) => {
         setCurrentTime(state.playedSeconds)
     }
-
-    // Determina qué marcador está activo en función del tiempo actual
-    const getActiveMarkerIndex = () => {
-        let index = -1
-        for (let i = 0; i < markers.length; i++) {
-            if (currentTime >= markers[i].time) {
-                index = i
-            }
-        }
-        return index
-    }
-
-    const activeIndex = getActiveMarkerIndex()
 
     return (
         <Box>
