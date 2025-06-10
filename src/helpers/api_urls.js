@@ -16,6 +16,7 @@ const URL = {
     GET_CATEGORIES: 'getCategories',
     CREATE_COURSE: 'courses/create',
     UPDATE_COURSE: 'courses/update',
+    REMOVE_COURSE: 'courses/remove',
     GET_ALL_COURSES: 'courses/getAll',
     GET_COURSE: 'courses/getById',
     GET_OWNED_COURSES: 'courses/getOwned',

@@ -9,7 +9,7 @@ import URL from '../helpers/api_urls'
 
 const { CREATE_COURSE, UPDATE_COURSE } = URL
 
-const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCourse = null, updateCourse = null }) => {
+const CreateCourseModal = ({ open, hndlCl, catData, update, existingCourse = null, updateCourse = null }) => {
     const initialFormState = {
         title: existingCourse ? existingCourse.title : "",
         description: existingCourse ? existingCourse.description : "",
@@ -37,6 +37,8 @@ const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCo
     const [oldVideos, setOldVideos] = useState(existingCourse ? [...existingCourse.videos] : [])
 
     const theme = useTheme()
+    const colors = { ...theme.palette }
+
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     const isFormValid =
     formData.title &&
@@ -166,7 +168,6 @@ const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCo
             } else {
                 dfltApiCall('POST', CREATE_COURSE, dataToSend)
                     .then(() => {
-                        onUpdate()
                         handleClose()
                     })
             }
@@ -174,21 +175,21 @@ const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCo
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <ModalBox sx={{ padding: `20px`, maxHeight: "90vh", overflowY: "auto", width: isMobile ? '90%' : '50%' }}>
-                <Typography variant={isMobile ? "h6" : "h5"} gutterBottom>{existingCourse ? "Editar Curso" : "Crear Curso"}</Typography>
+            <ModalBox sx={{ padding: `20px`, maxHeight: "90vh", overflowY: "auto", width: isMobile ? '90%' : '50%', backgroundColor: colors.background.paper }}>
+                <Typography variant={isMobile ? "h6" : "h5"} gutterBottom color="primary">{existingCourse ? "Editar Curso" : "Crear Curso"}</Typography>
                 <Box component="form" onSubmit={handleSubmit}>
                     <TextField fullWidth label="Título" name="title" value={formData.title} onChange={handleChange} margin="normal" required />
                     <TextField fullWidth label="Descripción" name="description" value={formData.description} onChange={handleChange} margin="normal" multiline rows={4} />
                     <Autocomplete multiple options={catData?.allLevel.map(cat => cat.name)} value={auxCatArr} onChange={handleCategoryChange} renderInput={(params) => <TextField {...params} label="Categorías" margin="normal" />} />
 
                     <Box display="flex" flexDirection={isMobile ? "column" : "row"} alignItems="center" gap={2} mt={2}>
-                        <Button variant="contained" component="label" fullWidth>Subir Miniatura<input type="file" hidden name="miniature" onChange={handleFileChange} /></Button>
+                        <Button variant="contained" component="label" fullWidth>Subir Miniatura<input type="file" hidden name="miniature" accept="image/*" onChange={handleFileChange} /></Button>
                         {formData.miniature && <IconButton onClick={() => removeFile("miniature")}><Delete color="error" /></IconButton>}
                     </Box>
                     {auxFiles.miniature && <img src={auxFiles.miniature} alt="Miniatura" style={{ width: "100%", marginTop: "10px" }} />}
 
                     <Box display="flex" flexDirection={isMobile ? "column" : "row"} alignItems="center" gap={2} mt={2}>
-                        <Button variant="contained" component="label" fullWidth>Subir Video<input type="file" hidden name="video" multiple onChange={handleFileChange} /></Button>
+                        <Button variant="contained" component="label" fullWidth>Subir Video<input type="file" hidden name="video" multiple accept="video/*" onChange={handleFileChange} /></Button>
                     </Box>
 
                     {oldVideos.map((vid, index) => (
@@ -235,7 +236,7 @@ const CreateCourseModal = ({ open, hndlCl, catData, onUpdate, update, existingCo
 
                     {formData.isPrivate && <TextField fullWidth label="Contraseña" name="password" type="password" value={formData.password} onChange={handleChange} margin="normal" required />}
 
-                    <Button type="submit" variant="contained" fullWidth disabled={!isFormValid} sx={{ mt: 3, bgcolor: theme.palette.secondary.main, color: "white", fontWeight: "bold", "&:hover": { bgcolor: theme.palette.secondary.dark } }}>
+                    <Button type="submit" variant="contained" fullWidth disabled={!isFormValid} sx={{ mt: 3, bgcolor: theme.palette.primary, color: "white", fontWeight: "bold", "&:hover": { bgcolor: theme.palette.secondary.dark } }}>
                         {existingCourse ? 'Actualizar curso' : 'Crear Curso'}
                     </Button>
                 </Box>

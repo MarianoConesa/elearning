@@ -35,7 +35,7 @@ const ManageCourseTabs = ({ onChange, updateUserData }) => {
               key={key}
               onClick={() => handleTabClick(key)}
               sx={{
-                flex: 1, // ← cada tab ocupa mismo ancho
+                flex: 1, //cada tab ocupa mismo ancho
                 textAlign: "center",
                 px: 3,
                 py: 1,

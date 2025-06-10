@@ -20,6 +20,7 @@ export const ThemeContextProvider = ({ children }) => {
     success: { main: '#66BB6A' }, // Verde Menta
     warning: { main: '#FFCA28' }, // Amarillo Intenso
     error: { main: '#E53935' }, // Rojo Suave
+    card: '#057adc',
     logoWhite: '#FFFFFF',
     black: '#000000',
     white: '#FFFFFF',
@@ -27,8 +28,8 @@ export const ThemeContextProvider = ({ children }) => {
 
   // Paleta oscura
   const darkPalette = {
-    primary: { main: '#1A237E' }, // Azul Nocturno
-    secondary: { main: '#FFB74D' }, // Naranja Suave
+    primary: { main: '#FFB74D' }, // Azul Nocturno
+    secondary: { main: '#1A237E' }, // Naranja Suave
     background: { default: '#0D1B2A', paper: '#1B263B' }, // Fondo oscuro
     text: { primary: '#FFFFFF', secondary: '#CCCCCC' }, // Blanco y Gris Claro
     success: { main: '#66BB6A' }, // Verde Menta

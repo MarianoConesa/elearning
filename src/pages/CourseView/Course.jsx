@@ -1,60 +1,62 @@
+import { Favorite, FavoriteBorder } from "@mui/icons-material"
 import {
     Avatar, Box, Button, CircularProgress, Grid,
     IconButton, Typography, useMediaQuery, useTheme
 } from "@mui/material"
-import { Favorite, FavoriteBorder } from "@mui/icons-material"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import CourseVideo from "../../components/CourseVideo"
-import { dfltApiCall } from "../../hooks/api/useApiCall"
-import URL from "../../helpers/api_urls"
-import VideoInfoBox from "../../components/VideoInfoBox/VideoInfoBox"
 import CreateCourseModal from "../../components/CreateCourseModal"
+import VideoInfoBox from "../../components/VideoInfoBox/VideoInfoBox"
+import URL from "../../helpers/api_urls"
+import { dfltApiCall } from "../../hooks/api/useApiCall"
 
-const { FOLLOW, UNFOLLOW, COMPLETE, LIKE, DISLIKE } = URL
+const { FOLLOW, UNFOLLOW, COMPLETE, LIKE, DISLIKE, REMOVE_COURSE } = URL
 
 const Course = ({ id, course, courseLoader, userData, update, updateUserData, updateCourses, updateCourse, userLoader, catData }) => {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
-    const [likes, setLikes] = useState(course?.likes || 0)
+    const [likes, setLikes] = useState(Number(course?.likes) || 0)
 
     const [followed, setFollowed] = useState(null)
     const [ended, setEnded] = useState(null)
-    const [liked, setLiked] = useState(null)
-    const owned = course?.user?.id === userData?.id
+    const [liked, setLiked] = useState(userData?.liked.includes(Number(id)))
+    const owned = userData?.isAdmin || course?.user?.id === userData?.id
     
     const videos = course?.videos || []
     const [activeVideoIndex, setActiveVideoIndex] = useState(0)
     const [editModalOpen, setEditModalOpen] = useState(false)
+
+    const navigate = useNavigate()
     
     useEffect(() => {
         if (userData) {
             setFollowed(userData.followed.includes(Number(id)))
             setEnded(userData.ended.includes(Number(id)))
             setLiked(userData.liked.includes(Number(id)))
-            setLikes(course?.likes)
         }
-        console.log({followed, ended, userData, id})
     }, [userData, id])
+
+    useEffect(() => {
+        setLikes(Number(course?.likes))
+    }, [course])
     
     const handleFollow = async () => {
         await dfltApiCall("POST", FOLLOW, { id })
         setFollowed(true)
         setEnded(false)
-        //await updateUserData()
     }
 
     const handleUnfollow = async () => {
         await dfltApiCall("POST", UNFOLLOW, { id })
         setFollowed(false)
         setEnded(false)
-        //await updateUserData()
     }
 
     const handleComplete = async () => {
         await dfltApiCall("POST", COMPLETE, { id })
         setFollowed(false)
         setEnded(true)
-        //await updateUserData()
     }
 
     const handleLike = async () => {
@@ -95,17 +97,42 @@ const Course = ({ id, course, courseLoader, userData, update, updateUserData, up
                         {course.title}
                     </Typography>
                     {owned && (
-                        <Button 
-                            variant="outlined" 
-                            size="small" 
-                            sx={{ ml: 2 }}
-                            onClick={() => setEditModalOpen(true)}
-                        >
-                            Editar curso
-                        </Button>
+                        <Box display="flex" gap={1} mt={1}>
+                            <Button 
+                                variant="outlined" 
+                                size="small" 
+                                onClick={() => setEditModalOpen(true)}
+                            >
+                                Editar curso
+                            </Button>
+                            <Button 
+                                variant="outlined" 
+                                size="small" 
+                                color="error"
+                                onClick={async () => {
+                                    const confirmed = window.confirm("¿Estás seguro de que quieres eliminar este curso? Esta acción no se puede deshacer.")
+                                    if (confirmed) {
+                                        try {
+                                            await dfltApiCall("DELETE", `${REMOVE_COURSE}/${id}`)
+                                            updateCourses?.()
+                                            navigate(-1) // Cambia a la ruta anterior
+                                        } catch (error) {
+                                            console.error("Error eliminando el curso:", error)
+                                            alert("Ocurrió un error al intentar eliminar el curso.")
+                                        }
+                                    }
+                                }}
+                            >
+                                Eliminar curso
+                            </Button>
+                        </Box>
                     )}
                     <Box display="flex" alignItems="center" gap={2} mt={1}>
-                        <Avatar src={course.user.profilePic} alt={course.user.name} />
+                        <Avatar src={course.user.profilePic} alt={course.user.name}  sx={{cursor: 'pointer'}} 
+                        onClick={(event) => {
+                                    event.stopPropagation()
+                                    navigate(`${import.meta.env.VITE_APP_FOREIGN_PROFILE}${course.user.id}`)
+                        }}></Avatar>
                         <Typography variant="body1" fontWeight="medium" color="text.primary">
                             {course.user.name}
                         </Typography>

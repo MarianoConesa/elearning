@@ -1,21 +1,20 @@
+import { Visibility, VisibilityOff } from "@mui/icons-material"
 import {
+    Alert,
     Avatar,
     Button,
     CircularProgress,
     Grid,
-    TextField,
-    Typography,
-    Snackbar,
-    Alert,
     IconButton,
     InputAdornment,
+    Snackbar,
+    TextField,
     useTheme
 } from "@mui/material"
 import { useEffect, useState } from "react"
-import { Visibility, VisibilityOff } from "@mui/icons-material"
-import { dfltApiCall } from "../../hooks/api/useApiCall"
-import URL from "../../helpers/api_urls"
 import ProfileImageUploader from "../../components/ProfileImageUploader"
+import URL from "../../helpers/api_urls"
+import { dfltApiCall } from "../../hooks/api/useApiCall"
 
 const { UPDATE_USER_INFO, UPDATE_USER_PASSWORD } = URL
 
