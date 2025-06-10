@@ -17,16 +17,16 @@ import { useTheme } from "@emotion/react"
 const { GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES, GET_ALL_COURSES, SEARCH_COURSES } = URL
 
 const AppRouter = () => {
-    const [initData, setInitData] = useState()
-    const [userData, setUserData] = useState()
-    const [catData, setCatData] = useState()
-    const [courseData, setCourseData] = useState([])
-    const [loader, setLoader] = useState()
-    const [userLoader, setUserLoader] = useState()
-    const [catLoader, setCatLoader] = useState()
-    const [coursesLoader, setCoursesLoader] = useState()
-    const [filterCat, setFilterCat] = useState([])
-    const [searchTerm, setSearchTerm] = useState("")
+    const [initData, setInitData] = useState() //logos
+    const [userData, setUserData] = useState() //datos del usuario si hay
+    const [catData, setCatData] = useState() //estado que recoje las categorias posibles, anidadas y sin anidar
+    const [courseData, setCourseData] = useState([]) //estado que recoje los cursos
+    const [loader, setLoader] = useState() //loader de initData
+    const [userLoader, setUserLoader] = useState() //loader de user
+    const [catLoader, setCatLoader] = useState() //loader de categorias
+    const [coursesLoader, setCoursesLoader] = useState() //loader de cursos
+    const [filterCat, setFilterCat] = useState([]) //estado que recoje las categorias por las que se quiera filtrar
+    const [searchTerm, setSearchTerm] = useState("") //termino de busqueda para pasar a fetchCourses
 
     const theme = useTheme()
     const colors = { ...theme.palette }
@@ -56,6 +56,7 @@ const AppRouter = () => {
         fetchSearchCourses(setCourseData, term, 1, 30)
     }
 
+    //funcion que trae los cursos
     const fetchCourses = async (setter, page = 1, per_page = 30, endpoint = GET_ALL_COURSES) => {
         const url = `${endpoint}?page=${page}&per_page=${per_page}`
         const res = await dfltApiCall("GET", url, { page, per_page })
@@ -81,6 +82,7 @@ const AppRouter = () => {
         }
       }
 
+      //Funcion que trae los cursos cuando es una busqueda
       const fetchSearchCourses = async (setter, searchTerm, page = 1, per_page = 30, endpoint = SEARCH_COURSES) => {
         try {
           const body = JSON.stringify([
@@ -129,11 +131,11 @@ const AppRouter = () => {
                 
                 <Grid id="scrollableDiv" item container sx={{ flexGrow: 1, overflowY: 'auto' }}>
                     <Routes>
-                        <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{ initData, userData, catData, courseData,setCourseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update, fetchCourses, searchTerm, fetchSearchCourses }} />} />
-                        <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{ initData, userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update, fetchCourses , updateUserData}} />} />
-                        <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{ initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, updateUserData, updateCourses }} />} />
-                        <Route path={import.meta.env.VITE_APP_USER_PROFILE} element={<ScreenProfile {...{ initData, userData, loader, userLoader, update, updateUserData }} />} />
-                        <Route path={`${import.meta.env.VITE_APP_FOREIGN_PROFILE}:id`} element={<ScreenForeignProfile {...{ initData, userData, loader, userLoader, update, updateUserData, catData ,filterCat, setFilterCat, fetchCourses }} />} />
+                        <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{ userData, catData, courseData,setCourseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update, fetchCourses, searchTerm, fetchSearchCourses }} />} />
+                        <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{ userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update, fetchCourses , updateUserData}} />} />
+                        <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{ userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, updateUserData, updateCourses }} />} />
+                        <Route path={import.meta.env.VITE_APP_USER_PROFILE} element={<ScreenProfile {...{ userData, loader, userLoader, update, updateUserData }} />} />
+                        <Route path={`${import.meta.env.VITE_APP_FOREIGN_PROFILE}:id`} element={<ScreenForeignProfile {...{ userData, loader, userLoader, update, updateUserData, catData ,filterCat, setFilterCat, fetchCourses }} />} />
                         <Route path={import.meta.env.VITE_APP_EMAIL_VERIFIED} element={<EmailVerified/>} />
                     </Routes>
                 </Grid>

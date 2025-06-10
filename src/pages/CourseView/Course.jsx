@@ -1,15 +1,15 @@
+import { Favorite, FavoriteBorder } from "@mui/icons-material"
 import {
     Avatar, Box, Button, CircularProgress, Grid,
     IconButton, Typography, useMediaQuery, useTheme
 } from "@mui/material"
-import { Favorite, FavoriteBorder } from "@mui/icons-material"
 import { useEffect, useState } from "react"
-import CourseVideo from "../../components/CourseVideo"
-import { dfltApiCall } from "../../hooks/api/useApiCall"
-import URL from "../../helpers/api_urls"
-import VideoInfoBox from "../../components/VideoInfoBox/VideoInfoBox"
-import CreateCourseModal from "../../components/CreateCourseModal"
 import { useNavigate } from "react-router-dom"
+import CourseVideo from "../../components/CourseVideo"
+import CreateCourseModal from "../../components/CreateCourseModal"
+import VideoInfoBox from "../../components/VideoInfoBox/VideoInfoBox"
+import URL from "../../helpers/api_urls"
+import { dfltApiCall } from "../../hooks/api/useApiCall"
 
 const { FOLLOW, UNFOLLOW, COMPLETE, LIKE, DISLIKE, REMOVE_COURSE } = URL
 

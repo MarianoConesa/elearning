@@ -1,6 +1,5 @@
-import React from 'react'
 import axios from 'axios';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 const url = import.meta.env.VITE_APP_API
 
@@ -27,7 +26,7 @@ const dfltApiCall = async (method, addUrl, body, setState, setLoader) => {
       Cookies.set('token', response.data.token, { expires: 7, sameSite: 'Lax', secure: false });
     }
 
-    const data = (response.data?.pagination || response.message?.pagination) ? response.data : (response.data.message ?? response.data.data);
+    const data = (response.data?.pagination || response.message?.pagination) ? response.data : (response.data.message ?? response.data.data); //a veces es un message y a veces un data
     setState && setState(data);
     setLoader && setLoader(false);
     return data;
@@ -38,4 +37,5 @@ const dfltApiCall = async (method, addUrl, body, setState, setLoader) => {
 };
 
 
-export { dfltApiCall }
+export { dfltApiCall };
+

@@ -1,14 +1,14 @@
 import {
-    Avatar,
-    CircularProgress,
-    Grid,
-    TextField,
-    Typography,
-    Box,
-    Container
-  } from "@mui/material"
-  import CourseCardsMenu from "../../components/CourseCardsMenu"
-  import { useThemeContext } from "../../context/ThemeContext"
+  Avatar,
+  Box,
+  CircularProgress,
+  Container,
+  Grid,
+  TextField,
+  Typography
+} from "@mui/material"
+import CourseCardsMenu from "../../components/CourseCardsMenu"
+import { useThemeContext } from "../../context/ThemeContext"
   
   const ForeignProfile = ({ user, courses, loading, catData, filterCat, setFilterCat, url, fetchCourses, setCourses }) => {
     const { isSmallScreen } = useThemeContext()

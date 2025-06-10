@@ -1,9 +1,8 @@
-import { Grid, Card, Tooltip, useTheme, useMediaQuery } from "@mui/material"
-import CourseCardsMenu from "../../components/CourseCardsMenu"
-import { dfltApiCall } from "../../hooks/api/useApiCall"
-import URL from '../../helpers/api_urls'
+import { useMediaQuery, useTheme } from "@mui/material"
 import { useEffect, useState } from "react"
+import CourseCardsMenu from "../../components/CourseCardsMenu"
 import ManageCourseTabs from "../../components/ManageCourseTabs"
+import URL from '../../helpers/api_urls'
 
 const { GET_OWNED_COURSES, GET_FOLLOWED_COURSES, GET_COMPLETED_COURSES } = URL
 
