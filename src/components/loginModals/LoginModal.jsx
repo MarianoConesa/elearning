@@ -155,7 +155,7 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
 
     return (
         <Modal open={openLogin} onClose={hndlClLogin}>
-            <ModalBox sx={{ padding: `20px` }}>
+            <ModalBox sx={{ padding: `20px`, backgroundColor: colors.background.default }}>
                 <Box sx={{ padding: `5%`, display: `flex`, flexDirection: `column`, alignItems: `center` }}>
                     {type === 'login' ? (
                         <Avatar sx={{ padding: `4%`, marginBottom: `5%`, bgcolor: colors.primary.main }}>
@@ -165,7 +165,7 @@ const LoginModal = ({ openLogin, hndlClLogin, type, update }) => {
                         <ProfileImageUploader {...{ image, setImage }} />
                     )}
                     {type === 'login' && (
-                        <Typography component="h1" variant="h5">
+                        <Typography component="h1" variant="h5" color="primary">
                             {`Inicio de sesión`}
                         </Typography>
                     )}

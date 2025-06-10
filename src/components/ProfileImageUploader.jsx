@@ -59,7 +59,7 @@ const ProfileImageUploader = ({ image, setImage }) => {
             }}
           />
         ) : (
-          <Typography>
+          <Typography color="text.primary">
             {isDragActive ? 'Soltar imagen aquí...' : 'Haz click o arrastra para seleccionar una foto de perfil'}
           </Typography>
         )}

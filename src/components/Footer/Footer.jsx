@@ -8,7 +8,7 @@ const Footer = ({ initData }) => {
   const colors = { ...theme.palette }
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-  const logo = initData?.[0] || null
+  const logo = isDarkMode ? initData?.black : initData?.white
   const navigate = useNavigate()
   const home = import.meta.env.VITE_APP_HOME
 

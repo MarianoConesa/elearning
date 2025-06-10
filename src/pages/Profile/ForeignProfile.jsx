@@ -29,7 +29,7 @@ import {
                 margin: "0 auto"
               }}
             />
-            <Typography variant="h6" mt={2}>
+            <Typography variant="h6" mt={2} color="primary">
               {user.name}
             </Typography>
           </Grid>

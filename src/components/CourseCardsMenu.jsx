@@ -86,7 +86,7 @@ const CourseCardsMenu = ({
           next={loadMore}
           hasMore={hasMore}
           loader={<p style={{ textAlign: "center" }}>{`Cargando cursos...`}</p>}
-          endMessage={<p style={{ textAlign: "center" }}><b>{`No hay más cursos por mostrar.`}</b></p>}
+          endMessage={<p style={{ textAlign: "center", color: colors.primary.main }}><b>{`No hay más cursos por mostrar.`}</b></p>}
           scrollableTarget="scrollableDiv"
         >
           <Grid container spacing={2} justifyContent="center" alignItems="center">

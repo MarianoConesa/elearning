@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom"
 const { LOGOUT } = URL
 
 const Header = ({ initData, loader, userData, userLoader, update, handleSearch }) => {
-    const svgImg = initData && initData[0]
     const [searchText, setSearchText] = useState("")
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
     const { open: openLogin, handleOpen: hndlOpLogin, handleClose: hndlClLogin } = useModal()
@@ -24,7 +23,9 @@ const Header = ({ initData, loader, userData, userLoader, update, handleSearch }
     const { toggleTheme, isDarkMode } = useThemeContext()
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
+    
+    const svgImg = initData && (!isDarkMode ? initData.white : initData.black)
+    
     const navigate = useNavigate()
     const myCourses = import.meta.env.VITE_APP_MANAGECOURSES
     const profile = import.meta.env.VITE_APP_USER_PROFILE

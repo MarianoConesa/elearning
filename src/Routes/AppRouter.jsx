@@ -12,6 +12,7 @@ import Footer from "../components/Footer/Footer"
 import { Box, Grid } from "@mui/material"
 import ScreenForeignProfile from "../Screens/Profile/ScreenForeignProfile"
 import EmailVerified from "../pages/EmailVerified"
+import { useTheme } from "@emotion/react"
 
 const { GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES, GET_ALL_COURSES, SEARCH_COURSES } = URL
 
@@ -26,6 +27,9 @@ const AppRouter = () => {
     const [coursesLoader, setCoursesLoader] = useState()
     const [filterCat, setFilterCat] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
+
+    const theme = useTheme()
+    const colors = { ...theme.palette }
 
     const update = () => {
         updateUserData()
@@ -120,7 +124,7 @@ const AppRouter = () => {
 
     return (
         <BrowserRouter>
-            <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', backgroundColor: colors.background.paper}}>
                 <Header {...{ initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, handleSearch }} />
                 
                 <Grid id="scrollableDiv" item container sx={{ flexGrow: 1, overflowY: 'auto' }}>
