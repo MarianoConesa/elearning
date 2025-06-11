@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom"
 
 const { LOGOUT } = URL
 
-const Header = ({ initData, loader, userData, userLoader, update, handleSearch }) => {
+const Header = ({ userData, userLoader, update, handleSearch }) => {
     const [searchText, setSearchText] = useState("")
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
     const { open: openLogin, handleOpen: hndlOpLogin, handleClose: hndlClLogin } = useModal()
@@ -24,7 +24,7 @@ const Header = ({ initData, loader, userData, userLoader, update, handleSearch }
     const colors = { ...theme.palette }
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     
-    const svgImg = initData && (!isDarkMode ? initData.white : initData.black)
+    const svgImg = !isDarkMode ? "/logoIconWhite.svg" : "/logoIcon.svg"
     
     const navigate = useNavigate()
     const myCourses = import.meta.env.VITE_APP_MANAGECOURSES
@@ -77,13 +77,9 @@ const Header = ({ initData, loader, userData, userLoader, update, handleSearch }
                 }}
                 onClick={() => { navigate(home); update() }}
                 >
-                {!loader && svgImg ? (
-                    <Icon sx={{ height: `8vh`, width: `8vh`, paddingRight: '5px' }}>
+                <Icon sx={{ height: `8vh`, width: `8vh`, paddingRight: '5px' }}>
                     <img style={{ height: '100%', width: '100%' }} src={svgImg} alt="Logo" />
-                    </Icon>
-                ) : (
-                    <CircularProgress sx={{ padding: `10px`, color: colors.logoWhite }} />
-                )}
+                </Icon>
 
                 <Typography
                     variant={isMobile ? 'h4' : 'h3'}

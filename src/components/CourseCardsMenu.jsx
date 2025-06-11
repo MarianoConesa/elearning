@@ -14,7 +14,6 @@ import FilterButtons from "./FilterButtons"
 const CourseCardsMenu = ({
   courses,
   setCourses,
-  loader,
   url,
   catData,
   filterCat,

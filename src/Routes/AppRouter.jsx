@@ -14,14 +14,12 @@ import ScreenForeignProfile from "../Screens/Profile/ScreenForeignProfile"
 import EmailVerified from "../pages/EmailVerified"
 import { useTheme } from "@emotion/react"
 
-const { GET_INITIAL_IMAGES, GET_USER_INFO, GET_CATEGORIES, GET_ALL_COURSES, SEARCH_COURSES } = URL
+const { GET_USER_INFO, GET_CATEGORIES, GET_ALL_COURSES, SEARCH_COURSES } = URL
 
 const AppRouter = () => {
-    const [initData, setInitData] = useState() //logos
     const [userData, setUserData] = useState() //datos del usuario si hay
     const [catData, setCatData] = useState() //estado que recoje las categorias posibles, anidadas y sin anidar
     const [courseData, setCourseData] = useState([]) //estado que recoje los cursos
-    const [loader, setLoader] = useState() //loader de initData
     const [userLoader, setUserLoader] = useState() //loader de user
     const [catLoader, setCatLoader] = useState() //loader de categorias
     const [coursesLoader, setCoursesLoader] = useState() //loader de cursos
@@ -34,7 +32,6 @@ const AppRouter = () => {
     const update = () => {
         updateUserData()
         updateCourses()
-        dfltApiCall('GET', GET_INITIAL_IMAGES, null, setInitData, setLoader)
         dfltApiCall('GET', GET_CATEGORIES, null, setCatData, setCatLoader)
     }
 
@@ -127,20 +124,20 @@ const AppRouter = () => {
     return (
         <BrowserRouter>
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', backgroundColor: colors.background.paper}}>
-                <Header {...{ initData, userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, handleSearch }} />
+                <Header {...{ userData, catData, courseData, userLoader, catLoader, coursesLoader, update, handleSearch }} />
                 
                 <Grid id="scrollableDiv" item container sx={{ flexGrow: 1, overflowY: 'auto' }}>
                     <Routes>
-                        <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{ userData, catData, courseData,setCourseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update, fetchCourses, searchTerm, fetchSearchCourses }} />} />
-                        <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{ userData, catData, courseData, filterCat, setFilterCat, loader, userLoader, catLoader, coursesLoader, update, fetchCourses , updateUserData}} />} />
-                        <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{ userData, catData, courseData, loader, userLoader, catLoader, coursesLoader, update, updateUserData, updateCourses }} />} />
-                        <Route path={import.meta.env.VITE_APP_USER_PROFILE} element={<ScreenProfile {...{ userData, loader, userLoader, update, updateUserData }} />} />
-                        <Route path={`${import.meta.env.VITE_APP_FOREIGN_PROFILE}:id`} element={<ScreenForeignProfile {...{ userData, loader, userLoader, update, updateUserData, catData ,filterCat, setFilterCat, fetchCourses }} />} />
+                        <Route path={import.meta.env.VITE_APP_HOME} element={<ScreenHome {...{ userData, catData, courseData,setCourseData, filterCat, setFilterCat, userLoader, catLoader, coursesLoader, update, fetchCourses, searchTerm, fetchSearchCourses }} />} />
+                        <Route path={import.meta.env.VITE_APP_MANAGECOURSES} element={<ScreenManageCourses {...{ userData, catData, courseData, filterCat, setFilterCat, userLoader, catLoader, coursesLoader, update, fetchCourses , updateUserData}} />} />
+                        <Route path={`${import.meta.env.VITE_APP_COURSE}:id`} element={<ScreenCourse {...{ userData, catData, courseData, userLoader, catLoader, coursesLoader, update, updateUserData, updateCourses }} />} />
+                        <Route path={import.meta.env.VITE_APP_USER_PROFILE} element={<ScreenProfile {...{ userData, userLoader, update, updateUserData }} />} />
+                        <Route path={`${import.meta.env.VITE_APP_FOREIGN_PROFILE}:id`} element={<ScreenForeignProfile {...{ userData, userLoader, update, updateUserData, catData ,filterCat, setFilterCat, fetchCourses }} />} />
                         <Route path={import.meta.env.VITE_APP_EMAIL_VERIFIED} element={<EmailVerified/>} />
                     </Routes>
                 </Grid>
 
-                <Footer {...{initData}} />
+                <Footer/>
             </Box>
         </BrowserRouter>
     )

@@ -1,5 +1,4 @@
 const URL = {
-    GET_INITIAL_IMAGES: `images/initialImages`,
     GET_USER_INFO: 'user/initialInfo',
     GET_FOREIGN_USER_INFO: 'user/getUserInfo',
     UPDATE_USER_INFO: 'user/updateUser',

@@ -2,13 +2,13 @@ import { Box, Grid, Icon, Typography, useMediaQuery, useTheme } from "@mui/mater
 import { useNavigate } from "react-router-dom"
 import { useThemeContext } from "../../context/ThemeContext"
 
-const Footer = ({ initData }) => {
+const Footer = () => {
   const theme = useTheme()
   const { isDarkMode } = useThemeContext()
   const colors = { ...theme.palette }
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-  const logo = isDarkMode ? initData?.black : initData?.white
+  const logo = isDarkMode ? "/logoIcon.svg" : "/logoIconWhite.svg"
   const navigate = useNavigate()
   const home = import.meta.env.VITE_APP_HOME
 

@@ -1,5 +1,4 @@
 import { Grid } from '@mui/material'
-import PropTypes from 'prop-types'
 import CourseCardsMenu from '../../components/CourseCardsMenu'
 
 const Home = ({ courseData, setCourseData, ...props }) => {
@@ -12,13 +11,6 @@ const Home = ({ courseData, setCourseData, ...props }) => {
             </Grid>
         </Grid>
     )
-}
-
-Home.propTypes = {
-    data: PropTypes.array,
-    userData: PropTypes.object,
-    loader: PropTypes.bool,
-    userLoader: PropTypes.bool
 }
 
 export default Home
