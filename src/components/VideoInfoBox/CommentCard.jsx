@@ -7,12 +7,12 @@ import { useTheme } from "@emotion/react"
 
 dayjs.locale("es")
 
-const CommentCard = ({ comment, currentUserId, onDelete }) => {
+const CommentCard = ({ comment, currentUserId, onDelete, isAdmin }) => {
 
   const theme = useTheme()
   const colors = { ...theme.palette }
 
-  const isOwner = currentUserId === comment.user?.id
+  const isOwner = isAdmin || currentUserId === comment.user?.id
   const formattedDate = dayjs(comment.created_at).format("D [de] MMM [de] YYYY, HH:mm")
   const { isSmallScreen } = useThemeContext()
 
