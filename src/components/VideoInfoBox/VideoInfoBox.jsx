@@ -164,6 +164,7 @@ const VideoInfoBox = ({ course, userData }) => {
                     key={comment.id}
                     comment={comment}
                     currentUserId={userData?.id}
+                    isAdmin={userData?.isAdmin}
                     onDelete={handleDeleteComment}
                   />
                 ))}

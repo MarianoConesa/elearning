@@ -25,7 +25,7 @@ const Footer = () => {
           flexDirection: isMobile ? "column" : "row",
           textAlign: isMobile ? "center" : "left",
           rowGap: theme.spacing(1),
-          minHeight: isMobile ? "auto" : "12vh",
+          minHeight: isMobile ? "auto" : "9vh",
         }}
       >
         {/* Logo y nombre */}
